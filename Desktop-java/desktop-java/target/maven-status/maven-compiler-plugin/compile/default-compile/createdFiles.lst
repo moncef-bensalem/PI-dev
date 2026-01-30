@@ -1,0 +1,6 @@
+com\nexus\desktop\PrimaryController.class
+com\nexus\desktop\model\User.class
+com\nexus\desktop\PrimaryController$1.class
+com\nexus\desktop\App.class
+com\nexus\desktop\service\ApiService.class
+com\nexus\desktop\LoginController.class
