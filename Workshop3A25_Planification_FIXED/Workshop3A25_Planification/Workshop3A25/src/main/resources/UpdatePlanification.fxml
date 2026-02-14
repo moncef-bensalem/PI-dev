@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.18"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="conttrollers.UpdatePlanificationController"
+            prefWidth="650.0" prefHeight="520.0">
+
+    <top>
+        <Label text="Update Planification"
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 12;"/>
+    </top>
+
+    <center>
+        <GridPane hgap="10" vgap="10" style="-fx-padding: 12;">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="140"/>
+                <ColumnConstraints prefWidth="460"/>
+            </columnConstraints>
+
+            <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfId" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Type:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfType" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="dpDate" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Heure début (HH:mm):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfDebut" promptText="08:30" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Heure fin (HH:mm):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfFin" promptText="10:00" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="Mode:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfMode" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="Statut:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfStatut" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+            <Label text="Description:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+            <TextArea fx:id="taDesc" prefRowCount="4" wrapText="true"
+                      GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+            <Label text="Lien meeting:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfLien" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+            <Label fx:id="lbError" text=""
+                   style="-fx-text-fill: #c62828; -fx-font-weight: bold;"
+                   GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 12;">
+            <Button text="Cancel" onAction="#onCancel"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Save" onAction="#onSave" style="-fx-font-weight: bold;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
