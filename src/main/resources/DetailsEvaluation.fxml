@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.DetailsEvaluationController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailsEvaluationController" prefHeight="650.0" prefWidth="500.0">
+   <children>
+      <VBox prefHeight="650.0" prefWidth="500.0" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <Label fx:id="idLabel" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Evaluation #" />
+            <Separator prefWidth="200.0" />
+            <HBox spacing="10.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555;" text="Created:" />
+                  <Label fx:id="dateLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;" text="-" />
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555;" text="Decision:" />
+                  <Label fx:id="decisionLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;" text="-" />
+               </children>
+            </HBox>
+            <VBox spacing="5.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555;" text="Comment:" />
+                  <Label fx:id="commentLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;" text="-" wrapText="true" />
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <HBox spacing="10.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555;" text="Interview ID:" />
+                  <Label fx:id="entretienLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;" text="-" />
+               </children>
+            </HBox>
+            <HBox spacing="10.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #555;" text="Recruiter ID:" />
+                  <Label fx:id="recruteurLabel" style="-fx-font-size: 14px; -fx-text-fill: #666;" text="-" />
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Score Competences" />
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+               <content>
+                  <ListView fx:id="scoreCompetenceListView" prefHeight="200.0" prefWidth="460.0" />
+               </content>
+            </ScrollPane>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <children>
+                  <Button onAction="#deleteEvaluation" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 8 20; -fx-background-radius: 4;" text="Delete" />
+                  <Button onAction="#close" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 8 20; -fx-background-radius: 4;" text="Close" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
