@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.UpdateEvaluationController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="750.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.UpdateEvaluationController">
+   <children>
+      <ScrollPane fitToWidth="true" prefHeight="750.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox spacing="15.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <!-- Title -->
+                  <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Update Evaluation" />
 
+                  <!-- Date Creation (Auto-updated, Display only) -->
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Date Updated" />
+                        <TextField fx:id="dateCreationField" editable="false" style="-fx-background-color: #f0f0f0;" />
+                        <Label style="-fx-font-size: 11px; -fx-text-fill: #666;" text="Date updates automatically on save" />
+                     </children>
+                  </VBox>
+
+                  <!-- Commentaire Global -->
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Global Comment *" />
+                        <TextField fx:id="commentaireGlobalField" promptText="Enter global comment" />
+                        <Label fx:id="commentaireErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+
+                  <!-- Decision Preliminaire -->
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Preliminary Decision *" />
+                        <ComboBox fx:id="decisionPreliminaireCombo" prefWidth="300.0" promptText="Select decision" />
+                        <Label fx:id="decisionErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+
+                  <!-- FK Section (Read-only) -->
+                  <VBox spacing="10.0" style="-fx-border-color: #9E9E9E; -fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 10; -fx-background-color: #f5f5f5;">
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #666;" text="Associated Records (Read-only)" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Interview ID" />
+                                    <TextField fx:id="fkEntretienIdField" editable="false" style="-fx-background-color: #e0e0e0;" />
+                                 </children>
+                              </VBox>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Recruiter ID" />
+                                    <TextField fx:id="fkRecruteurIdField" editable="false" style="-fx-background-color: #e0e0e0;" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Score Competences Section -->
+                  <VBox spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Competence Scores" />
+                              <HBox HBox.hgrow="ALWAYS" />
+                              <Button fx:id="addScoreButton" onAction="#handleAddScoreCompetence" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="+ Add Score" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="scoreCountLabel" style="-fx-font-size: 12px; -fx-text-fill: #666;" text="0 competence score(s)" />
+                        <ListView fx:id="scoreCompetencesListView" prefHeight="150.0" />
+                     </children>
+                  </VBox>
+
+                  <!-- Action Buttons -->
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                     <children>
+                        <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;" text="Cancel" />
+                        <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save Changes" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>

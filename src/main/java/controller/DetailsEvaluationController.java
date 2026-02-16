@@ -79,6 +79,36 @@ public class DetailsEvaluationController implements Initializable {
     }
 
     @FXML
+    private void openUpdateEvaluation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UpdateEvaluation.fxml"));
+            Parent root = loader.load();
+
+            UpdateEvaluationController controller = loader.getController();
+            controller.setEvaluation(evaluation);
+
+            Stage stage = new Stage();
+            stage.setTitle("Update Evaluation #" + evaluation.getIdEvaluation());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the details if the evaluation was updated
+            if (controller.isSaved()) {
+                // Reload evaluation from database to get updated data
+                Evaluation updatedEvaluation = evaluationDAO.getOne(evaluation);
+                if (updatedEvaluation != null) {
+                    this.evaluation = updatedEvaluation;
+                    populateFields();
+                    loadScoreCompetences();
+                }
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open update dialog: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void deleteEvaluation() {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Delete");

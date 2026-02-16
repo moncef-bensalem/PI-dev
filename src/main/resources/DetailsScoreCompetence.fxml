@@ -42,6 +42,7 @@
                </VBox.margin>
                <children>
                   <Button onAction="#deleteScoreCompetence" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 8 20; -fx-background-radius: 4;" text="Delete" />
+                  <Button onAction="#openUpdate" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 8 20; -fx-background-radius: 4;" text="Update" />
                   <Button onAction="#close" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 8 20; -fx-background-radius: 4;" text="Close" />
                </children>
             </HBox>

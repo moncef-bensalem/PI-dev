@@ -2,13 +2,18 @@ package controller;
 
 import database.ScoreCompetenceDAO;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.ScoreCompetence;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,6 +34,7 @@ public class DetailsScoreCompetenceController implements Initializable {
     private ScoreCompetence scoreCompetence;
     private ScoreCompetenceDAO scoreCompetenceDAO;
     private boolean deleted = false;
+    private boolean updated = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,6 +48,10 @@ public class DetailsScoreCompetenceController implements Initializable {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public boolean isUpdated() {
+        return updated;
     }
 
     @FXML
@@ -79,8 +89,33 @@ public class DetailsScoreCompetenceController implements Initializable {
         if (scoreCompetence != null) {
             if (idLabel != null) idLabel.setText("Score Competence #" + scoreCompetence.getIdDetail());
             if (critereLabel != null) critereLabel.setText("Criteria: " + scoreCompetence.getNomCritere());
-            if (noteLabel != null) noteLabel.setText("Note: " + scoreCompetence.getNoteAttribuee() + "/10");
+            if (noteLabel != null) noteLabel.setText("Note: " + scoreCompetence.getNoteAttribuee() + "/20");
             if (appreciationLabel != null) appreciationLabel.setText("Appreciation: " + (scoreCompetence.getAppreciationSpecifique() != null ? scoreCompetence.getAppreciationSpecifique() : "N/A"));
+        }
+    }
+
+    @FXML
+    private void openUpdate() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UpdateScoreCompetence.fxml"));
+            Parent root = loader.load();
+
+            UpdateScoreCompetenceController controller = loader.getController();
+            controller.setScoreCompetence(scoreCompetence);
+
+            Stage stage = new Stage();
+            stage.setTitle("Update Score Competence");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            if (controller.isSaved()) {
+                updated = true;
+                scoreCompetence = controller.getScoreCompetence();
+                populateFields();
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open update window: " + e.getMessage());
         }
     }
 }

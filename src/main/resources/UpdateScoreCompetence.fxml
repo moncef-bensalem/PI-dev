@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.UpdateScoreCompetenceController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="500.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.UpdateScoreCompetenceController">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <!-- Title -->
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Update Competence Score" />
 
+            <!-- Nom Critere -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Criteria Name *" />
+                  <TextField fx:id="nomCritereField" promptText="Enter criteria name" />
+                  <Label fx:id="nomCritereErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+               </children>
+            </VBox>
+
+            <!-- Note Attribuee -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Score (0-20) *" />
+                  <TextField fx:id="noteAttribueeField" promptText="Enter score between 0 and 20" />
+                  <Label fx:id="noteErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+               </children>
+            </VBox>
+
+            <!-- Appreciation Specifique -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Specific Appreciation (Optional)" />
+                  <TextField fx:id="appreciationSpecifiqueField" promptText="Enter specific appreciation" />
+               </children>
+            </VBox>
+
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+               <children>
+                  <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;" text="Cancel" />
+                  <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
