@@ -1,11 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0"
+<AnchorPane prefHeight="700.0" prefWidth="700.0"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.CreateEvaluationController">
-
+   <children>
+      <ScrollPane fitToWidth="true" prefHeight="700.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox spacing="15.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <!-- Title -->
+                  <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Create New Evaluation" />
+                  
+                  <!-- Commentaire Global -->
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Global Comment *" />
+                        <TextField fx:id="commentaireGlobalField" promptText="Enter global comment" />
+                        <Label fx:id="commentaireErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Decision Preliminaire -->
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Preliminary Decision *" />
+                        <ComboBox fx:id="decisionPreliminaireCombo" prefWidth="300.0" promptText="Select decision" />
+                        <Label fx:id="decisionErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- FK Section (to be deleted after integration) -->
+                  <VBox spacing="10.0" style="-fx-border-color: #FF9800; -fx-border-width: 2; -fx-border-radius: 5; -fx-padding: 10;">
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #FF9800;" text="Temporary: Foreign Keys (Delete after integration)" />
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label text="Interview ID (fkEntretienId) *" />
+                              <TextField fx:id="fkEntretienIdField" promptText="Enter interview ID" />
+                              <Label fx:id="entretienErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label text="Recruiter ID (fkRecruteurId) *" />
+                              <TextField fx:id="fkRecruteurIdField" promptText="Enter recruiter ID" />
+                              <Label fx:id="recruteurErrorLabel" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <!-- Score Competences Section -->
+                  <VBox spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Competence Scores" />
+                              <HBox HBox.hgrow="ALWAYS" />
+                              <Button fx:id="addScoreButton" onAction="#handleAddScoreCompetence" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="+ Add Score" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="scoreCountLabel" style="-fx-font-size: 12px; -fx-text-fill: #666;" text="0 competence score(s) added" />
+                        <ListView fx:id="scoreCompetencesListView" prefHeight="150.0" />
+                     </children>
+                  </VBox>
+                  
+                  <!-- Action Buttons -->
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                     <children>
+                        <Button fx:id="cancelButton" onAction="#handleCancel" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;" text="Cancel" />
+                        <Button fx:id="saveButton" onAction="#handleSave" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save Evaluation" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>

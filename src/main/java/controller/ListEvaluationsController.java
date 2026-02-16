@@ -195,4 +195,23 @@ public class ListEvaluationsController implements Initializable {
         evaluationsListView.getItems().setAll(evaluations);
         totalEvaluationsLabel.setText("Total: " + evaluations.size() + " evaluation" + (evaluations.size() != 1 ? "s" : ""));
     }
+
+    @FXML
+    private void handleAddEvaluation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CreateEvaluation.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Create New Evaluation");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh the list after closing create dialog
+            loadEvaluations();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open create evaluation dialog: " + e.getMessage());
+        }
+    }
 }
