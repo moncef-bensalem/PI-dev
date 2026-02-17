@@ -75,7 +75,6 @@ public class UpdateScoreCompetenceController implements Initializable {
     private boolean validateForm() {
         boolean isValid = true;
 
-        // Validate nomCritere (mandatory)
         String nomCritere = nomCritereField.getText().trim();
         if (nomCritere.isEmpty()) {
             nomCritereErrorLabel.setText("Criteria name is required");
@@ -84,7 +83,6 @@ public class UpdateScoreCompetenceController implements Initializable {
             nomCritereErrorLabel.setText("");
         }
 
-        // Validate noteAttribuee (0-20)
         String noteText = noteAttribueeField.getText().trim();
         if (noteText.isEmpty()) {
             noteErrorLabel.setText("Score is required");

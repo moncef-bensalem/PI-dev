@@ -32,13 +32,11 @@ public class EvaluationDAO implements Services<Evaluation> {
             pstm.setInt(5, evaluation.getFkRecruteurId());
             pstm.executeUpdate();
 
-            // Récupérer l'ID généré
             ResultSet rs = pstm.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
                 evaluation.setIdEvaluation(generatedId);
 
-                // Sauvegarder les ScoreCompetence associés avec l'ID de l'évaluation
                 if (evaluation.getScoreCompetences() != null) {
                     for (ScoreCompetence sc : evaluation.getScoreCompetences()) {
                         scoreCompetenceDAO.addWithEvaluationId(sc, generatedId);
@@ -63,7 +61,6 @@ public class EvaluationDAO implements Services<Evaluation> {
             pstm.setInt(6, evaluation.getIdEvaluation());
             pstm.executeUpdate();
 
-            // Sauvegarder les ScoreCompetence associés avec l'ID de l'évaluation
             if (evaluation.getScoreCompetences() != null) {
                 for (ScoreCompetence sc : evaluation.getScoreCompetences()) {
                     scoreCompetenceDAO.addWithEvaluationId(sc, evaluation.getIdEvaluation());
@@ -126,7 +123,6 @@ public class EvaluationDAO implements Services<Evaluation> {
                 result.setFkEntretienId(rs.getInt("fk_entretien_id"));
                 result.setFkRecruteurId(rs.getInt("fk_recruteur_id"));
 
-                // Récupérer la liste des ScoreCompetence associés
                 List<ScoreCompetence> scores = scoreCompetenceDAO.getByEvaluationId(result.getIdEvaluation());
                 result.setScoreCompetences(scores);
             }

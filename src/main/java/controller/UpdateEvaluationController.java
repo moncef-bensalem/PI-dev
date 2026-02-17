@@ -17,13 +17,9 @@ import model.ScoreCompetence;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class UpdateEvaluationController implements Initializable {
-
-    @FXML
-    private TextField dateCreationField;
 
     @FXML
     private TextField commentaireGlobalField;
@@ -36,12 +32,6 @@ public class UpdateEvaluationController implements Initializable {
     private Label decisionErrorLabel;
 
     @FXML
-    private TextField fkEntretienIdField;
-
-    @FXML
-    private TextField fkRecruteurIdField;
-
-    @FXML
     private ListView<ScoreCompetence> scoreCompetencesListView;
     @FXML
     private Label scoreCountLabel;
@@ -49,16 +39,13 @@ public class UpdateEvaluationController implements Initializable {
     private EvaluationDAO evaluationDAO;
     private ScoreCompetenceDAO scoreCompetenceDAO;
     private Evaluation currentEvaluation;
-    private DateTimeFormatter dateFormatter;
     private boolean saved = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         evaluationDAO = new EvaluationDAO();
         scoreCompetenceDAO = new ScoreCompetenceDAO();
-        dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        // Initialize decision combo box
         decisionPreliminaireCombo.setItems(FXCollections.observableArrayList(
                 Evaluation.DecisionPreliminaire.FAVORABLE,
                 Evaluation.DecisionPreliminaire.DEFAVORABLE,
@@ -80,15 +67,8 @@ public class UpdateEvaluationController implements Initializable {
 
     private void populateFields() {
         if (currentEvaluation != null) {
-            // Display current date (will be updated on save)
-            dateCreationField.setText(LocalDateTime.now().format(dateFormatter));
-
             commentaireGlobalField.setText(currentEvaluation.getCommentaireGlobal());
             decisionPreliminaireCombo.setValue(currentEvaluation.getDecisionPreliminaire());
-
-            // FK fields are read-only
-            fkEntretienIdField.setText(String.valueOf(currentEvaluation.getFkEntretienId()));
-            fkRecruteurIdField.setText(String.valueOf(currentEvaluation.getFkRecruteurId()));
         }
     }
 
@@ -158,9 +138,7 @@ public class UpdateEvaluationController implements Initializable {
 
             ScoreCompetence newScore = controller.getScoreCompetence();
             if (newScore != null) {
-                // Save the new score to database with the current evaluation ID
                 scoreCompetenceDAO.addWithEvaluationId(newScore, currentEvaluation.getIdEvaluation());
-                // Reload scores from database
                 loadScoreCompetences();
             }
         } catch (IOException e) {
@@ -189,13 +167,10 @@ public class UpdateEvaluationController implements Initializable {
             return;
         }
 
-        // Update evaluation data
-        currentEvaluation.setDateCreation(LocalDateTime.now()); // Auto-update date
+        currentEvaluation.setDateCreation(LocalDateTime.now());
         currentEvaluation.setCommentaireGlobal(commentaireGlobalField.getText().trim());
         currentEvaluation.setDecisionPreliminaire(decisionPreliminaireCombo.getValue());
-        // fkEntretienId and fkRecruteurId are not updatable
 
-        // Save to database
         evaluationDAO.update(currentEvaluation);
 
         saved = true;
@@ -212,7 +187,6 @@ public class UpdateEvaluationController implements Initializable {
     private boolean validateForm() {
         boolean isValid = true;
 
-        // Validate commentaireGlobal
         String commentaire = commentaireGlobalField.getText().trim();
         if (commentaire.isEmpty()) {
             commentaireErrorLabel.setText("Global comment is required");
@@ -221,7 +195,6 @@ public class UpdateEvaluationController implements Initializable {
             commentaireErrorLabel.setText("");
         }
 
-        // Validate decisionPreliminaire
         if (decisionPreliminaireCombo.getValue() == null) {
             decisionErrorLabel.setText("Please select a decision");
             isValid = false;

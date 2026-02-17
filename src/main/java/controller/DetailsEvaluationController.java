@@ -93,9 +93,7 @@ public class DetailsEvaluationController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Refresh the details if the evaluation was updated
             if (controller.isSaved()) {
-                // Reload evaluation from database to get updated data
                 Evaluation updatedEvaluation = evaluationDAO.getOne(evaluation);
                 if (updatedEvaluation != null) {
                     this.evaluation = updatedEvaluation;
@@ -159,7 +157,7 @@ public class DetailsEvaluationController implements Initializable {
         card.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 10; -fx-cursor: hand;");
         card.setPrefWidth(440);
 
-        // Make card clickable to open details
+
         card.setOnMouseClicked(event -> openScoreCompetenceDetails(score));
 
         HBox header = new HBox(10);
@@ -168,13 +166,12 @@ public class DetailsEvaluationController implements Initializable {
         Label critereLabel = new Label(score.getNomCritere());
         critereLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
-        Label noteLabel = new Label("Note: " + score.getNoteAttribuee() + "/10");
+        Label noteLabel = new Label("Note: " + score.getNoteAttribuee() + "/20");
         noteLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #2196F3; -fx-font-weight: bold;");
 
         HBox.setHgrow(critereLabel, Priority.ALWAYS);
         critereLabel.setMaxWidth(Double.MAX_VALUE);
 
-        // Delete button
         Button deleteButton = new Button("Delete");
         deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 4 12; -fx-background-radius: 4;");
         deleteButton.setOnAction(event -> {
@@ -206,7 +203,6 @@ public class DetailsEvaluationController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Refresh the list if the score was deleted
             if (controller.isDeleted()) {
                 loadScoreCompetences();
             }

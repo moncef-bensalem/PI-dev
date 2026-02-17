@@ -71,7 +71,6 @@ public class ListEvaluationsController implements Initializable {
         card.setPadding(new Insets(15));
         card.setPrefWidth(720);
 
-        // Make card clickable to open details
         card.setOnMouseClicked(event -> openEvaluationDetails(evaluation));
 
         HBox header = new HBox(10);
@@ -86,18 +85,16 @@ public class ListEvaluationsController implements Initializable {
         Label decisionLabel = new Label(evaluation.getDecisionPreliminaire().toString());
         decisionLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + getDecisionHexColor(evaluation.getDecisionPreliminaire()) + ";");
 
-        // Spacer to push delete button to the right
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Delete button
         Button deleteButton = new Button("Delete");
         deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 5 10; -fx-background-radius: 4;");
         deleteButton.setOnAction(event -> {
-            event.consume(); // Prevent card click event
+            event.consume();
             handleDeleteEvaluation(evaluation);
         });
-        deleteButton.setOnMouseClicked(event -> event.consume()); // Prevent card click when clicking delete
+        deleteButton.setOnMouseClicked(event -> event.consume());
 
         header.getChildren().addAll(idLabel, decisionIndicator, decisionLabel, spacer, deleteButton);
 
@@ -129,7 +126,6 @@ public class ListEvaluationsController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvaluation.fxml"));
             Parent root = loader.load();
 
-            // Get controller and pass the evaluation
             DetailsEvaluationController controller = loader.getController();
             controller.setEvaluation(evaluation);
 
@@ -139,7 +135,6 @@ public class ListEvaluationsController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Refresh the list after closing details (in case of deletion or updates)
             if (controller.isDeleted()) {
                 loadEvaluations();
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation deleted successfully.");
@@ -208,7 +203,6 @@ public class ListEvaluationsController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Refresh the list after closing create dialog
             loadEvaluations();
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Could not open create evaluation dialog: " + e.getMessage());

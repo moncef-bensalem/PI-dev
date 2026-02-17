@@ -54,7 +54,6 @@ public class CreateEvaluationController implements Initializable {
         currentEvaluation = new Evaluation();
         currentEvaluation.setDateCreation(LocalDateTime.now());
 
-        // Initialize decision combo box
         decisionPreliminaireCombo.setItems(FXCollections.observableArrayList(
                 Evaluation.DecisionPreliminaire.FAVORABLE,
                 Evaluation.DecisionPreliminaire.DEFAVORABLE,
@@ -114,13 +113,11 @@ public class CreateEvaluationController implements Initializable {
             return;
         }
 
-        // Set evaluation data
         currentEvaluation.setCommentaireGlobal(commentaireGlobalField.getText().trim());
         currentEvaluation.setDecisionPreliminaire(decisionPreliminaireCombo.getValue());
         currentEvaluation.setFkEntretienId(Integer.parseInt(fkEntretienIdField.getText().trim()));
         currentEvaluation.setFkRecruteurId(Integer.parseInt(fkRecruteurIdField.getText().trim()));
 
-        // Save to database
         evaluationDAO.add(currentEvaluation);
 
         showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation created successfully!");
@@ -135,7 +132,6 @@ public class CreateEvaluationController implements Initializable {
     private boolean validateForm() {
         boolean isValid = true;
 
-        // Validate commentaireGlobal
         String commentaire = commentaireGlobalField.getText().trim();
         if (commentaire.isEmpty()) {
             commentaireErrorLabel.setText("Global comment is required");
@@ -144,7 +140,6 @@ public class CreateEvaluationController implements Initializable {
             commentaireErrorLabel.setText("");
         }
 
-        // Validate decisionPreliminaire
         if (decisionPreliminaireCombo.getValue() == null) {
             decisionErrorLabel.setText("Please select a decision");
             isValid = false;
@@ -152,7 +147,6 @@ public class CreateEvaluationController implements Initializable {
             decisionErrorLabel.setText("");
         }
 
-        // Validate fkEntretienId
         String entretienId = fkEntretienIdField.getText().trim();
         if (entretienId.isEmpty()) {
             entretienErrorLabel.setText("Interview ID is required");
@@ -167,7 +161,6 @@ public class CreateEvaluationController implements Initializable {
             }
         }
 
-        // Validate fkRecruteurId
         String recruteurId = fkRecruteurIdField.getText().trim();
         if (recruteurId.isEmpty()) {
             recruteurErrorLabel.setText("Recruiter ID is required");
