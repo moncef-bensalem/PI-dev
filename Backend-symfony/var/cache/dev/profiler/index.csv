@@ -18,3 +18,6 @@ c0c3b7,127.0.0.1,GET,http://localhost:8000/,1769768485,,404,request
 0059e5,127.0.0.1,POST,http://localhost:8000/api/auth/login,1769768691,,200,request
 253f02,127.0.0.1,POST,http://localhost:8000/api/auth/login,1769769339,,401,request
 482214,127.0.0.1,POST,http://localhost:8000/api/auth/login,1769769359,,200,request
+71a9d9,127.0.0.1,GET,http://localhost:8000/api/auth/login,1770810393,db421a,500,request
+db421a,127.0.0.1,POST,http://localhost:8000/api/auth/login,1770810393,,500,request
+5d7671,127.0.0.1,GET,http://127.0.0.1:8000/,1770987759,,404,request

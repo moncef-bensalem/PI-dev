@@ -10,8 +10,9 @@ security:
         # Define your user provider to load users from the database
         app_user_provider:
             entity:
-                class: App\Entity\User
-                property: email
+                class: App\Entity\Y
+                property: 'y'
+        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
         dev:

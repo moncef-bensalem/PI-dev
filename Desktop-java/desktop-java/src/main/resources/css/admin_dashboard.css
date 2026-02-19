@@ -1,0 +1,152 @@
+/* NEXUS Admin Dashboard - Modern Design */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f0f4f8;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    -fx-background-color: linear-gradient(to bottom right, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    -fx-padding: 20 0 20 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 2, 0);
+}
+
+.admin-sidebar-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.admin-sidebar-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(255,255,255,0.7);
+}
+
+.admin-sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255,255,255,0.85);
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+    -fx-alignment: center-left;
+}
+
+.admin-sidebar-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-text-fill: white;
+}
+
+.admin-logout-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e94560;
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+}
+
+.admin-logout-button:hover {
+    -fx-background-color: rgba(233,69,96,0.2);
+}
+
+/* Main content */
+.admin-main {
+    -fx-background-color: #f0f4f8;
+    -fx-padding: 28;
+}
+
+.admin-welcome {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Stats cards */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+}
+
+.stat-card-blue {
+    -fx-background-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.stat-card-green {
+    -fx-background-color: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.stat-card-orange {
+    -fx-background-color: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+}
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.stat-value-blue { -fx-text-fill: #1a1a2e; }
+.stat-value-green { -fx-text-fill: #1a1a2e; }
+.stat-value-orange { -fx-text-fill: #1a1a2e; }
+
+/* Content cards */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 20, 0, 0, 4);
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Chart */
+.pie-chart {
+    -fx-background-color: transparent;
+}
+
+/* Buttons */
+.btn-admin-primary {
+    -fx-background-color: linear-gradient(to right, #e94560 0%, #c73e54 100%);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+}
+
+.btn-admin-primary:hover {
+    -fx-background-color: linear-gradient(to right, #f05a75 0%, #e94560 100%);
+}
+
+.btn-admin-secondary {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #4a5568;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+}
+
+.btn-admin-secondary:hover {
+    -fx-background-color: #cbd5e0;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}

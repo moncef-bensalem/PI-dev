@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.layout.Region?>
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.nexus.desktop.controller.DashboardController">
+
+    <!-- ================= HEADER ================= -->
+    <top>
+        <VBox spacing="20">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="User Management Dashboard">
+                    <font>
+                        <Font name="System Bold" size="26"/>
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="User Management" onAction="#onUserManagementButtonClick"/>
+                <Button text="Refresh" onAction="#onRefreshButtonClick"/>
+                <Button text="Export" onAction="#onExportButtonClick"/>
+                <Button text="Logout" onAction="#onLogoutButtonClick"/>
+            </HBox>
+
+            <!-- ================= STATS CARDS ================= -->
+            <HBox spacing="20">
+
+                <!-- Total Users -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color:#e3f2fd; -fx-background-radius:8; -fx-border-radius:8;"
+                      HBox.hgrow="ALWAYS">
+                    <Label text="Total Users" style="-fx-font-weight:bold; -fx-text-fill:#2196f3;"/>
+                    <Label fx:id="totalUsersLabel" text="0"
+                           style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#2196f3;"/>
+                </VBox>
+
+                <!-- Active Users -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color:#e8f5e8; -fx-background-radius:8; -fx-border-radius:8;"
+                      HBox.hgrow="ALWAYS">
+                    <Label text="Active Users" style="-fx-font-weight:bold; -fx-text-fill:#4caf50;"/>
+                    <Label fx:id="activeUsersLabel" text="0"
+                           style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#4caf50;"/>
+                </VBox>
+
+                <!-- New Users -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color:#fff3e0; -fx-background-radius:8; -fx-border-radius:8;"
+                      HBox.hgrow="ALWAYS">
+                    <Label text="New This Month" style="-fx-font-weight:bold; -fx-text-fill:#ff9800;"/>
+                    <Label fx:id="newUsersThisMonthLabel" text="0"
+                           style="-fx-font-size:28px; -fx-font-weight:bold; -fx-text-fill:#ff9800;"/>
+                </VBox>
+
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ================= CENTER ================= -->
+    <center>
+        <GridPane hgap="20" vgap="20">
+
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Pie Chart -->
+            <VBox spacing="10" GridPane.columnIndex="0">
+                <Label text="Role Distribution"
+                       style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+                <PieChart fx:id="roleDistributionChart"
+                          VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <!-- Recent Users -->
+            <VBox spacing="10" GridPane.columnIndex="1">
+                <Label text="Recent User Creations"
+                       style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+                <TableView fx:id="recentCreationsTable"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="creationNameColumn" text="Name"/>
+                        <TableColumn fx:id="creationEmailColumn" text="Email"/>
+                        <TableColumn fx:id="creationRoleColumn" text="Role"/>
+                        <TableColumn fx:id="creationDateColumn" text="Created"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Security Alerts -->
+            <VBox spacing="10"
+                  GridPane.columnIndex="0"
+                  GridPane.columnSpan="2"
+                  GridPane.rowIndex="1">
+                <Label text="Security Alerts"
+                       style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+                <TableView fx:id="securityAlertsTable"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="alertTypeColumn" text="Type"/>
+                        <TableColumn fx:id="alertSeverityColumn" text="Severity"/>
+                        <TableColumn fx:id="alertDateColumn" text="Date"/>
+                        <TableColumn fx:id="alertDescriptionColumn" text="Description"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+        </GridPane>
+    </center>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+</BorderPane>

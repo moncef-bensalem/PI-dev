@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="dashboardContainer"
+            fx:controller="com.nexus.desktop.controller.DashboardController"
+            stylesheets="@../css/admin_dashboard.css"
+            style="-fx-background-color: #f0f4f8;">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox styleClass="admin-sidebar" prefWidth="220" minWidth="220" spacing="0">
+            <padding>
+                <Insets top="24" right="0" bottom="24" left="0"/>
+            </padding>
+            <StackPane fx:id="adminLogoContainer" alignment="CENTER" maxHeight="70">
+                <padding>
+                    <Insets bottom="16" left="20" right="20"/>
+                </padding>
+                <Label fx:id="adminLogoText" text="NEXUS" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            </StackPane>
+            <Label text="Admin Portal" styleClass="admin-sidebar-subtitle">
+                <padding>
+                    <Insets bottom="20" left="20" right="20"/>
+                </padding>
+            </Label>
+            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+            <Button text="👥  Gestion utilisateurs" styleClass="admin-sidebar-button" onAction="#onUserManagementButtonClick" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button text="🔄  Actualiser" styleClass="admin-sidebar-button" onAction="#onRefreshButtonClick" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button text="📤  Exporter" styleClass="admin-sidebar-button" onAction="#onExportButtonClick" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+            <Button text="🚪  Déconnexion" styleClass="admin-logout-button" onAction="#onLogoutButtonClick" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <padding>
+                <Insets bottom="24"/>
+            </padding>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox styleClass="admin-main" spacing="24">
+                <padding>
+                    <Insets top="0" right="0" bottom="24" left="0"/>
+                </padding>
+
+                <!-- Welcome header -->
+                <Label fx:id="welcomeHeaderLabel" text="Tableau de bord" styleClass="admin-welcome"/>
+
+                <!-- Stats cards -->
+                <HBox spacing="20">
+                    <VBox fx:id="statTotal" styleClass="stat-card stat-card-blue" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Total utilisateurs" styleClass="stat-label stat-value-blue"/>
+                        <Label fx:id="totalUsersLabel" text="0" styleClass="stat-value stat-value-blue"/>
+                    </VBox>
+                    <VBox fx:id="statActive" styleClass="stat-card stat-card-green" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Utilisateurs actifs" styleClass="stat-label stat-value-green"/>
+                        <Label fx:id="activeUsersLabel" text="0" styleClass="stat-value stat-value-green"/>
+                    </VBox>
+                    <VBox fx:id="statNew" styleClass="stat-card stat-card-orange" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Nouveaux ce mois" styleClass="stat-label stat-value-orange"/>
+                        <Label fx:id="newUsersThisMonthLabel" text="0" styleClass="stat-value stat-value-orange"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Chart and Recent Users -->
+                <GridPane hgap="20" vgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+                    <VBox styleClass="content-card" spacing="12" GridPane.columnIndex="0">
+                        <Label text="Distribution des rôles" styleClass="section-title"/>
+                        <PieChart fx:id="roleDistributionChart" styleClass="pie-chart" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                    <VBox styleClass="content-card" spacing="12" GridPane.columnIndex="1">
+                        <Label text="Dernières inscriptions" styleClass="section-title"/>
+                        <ScrollPane fx:id="recentCreationsScrollPane" fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                            <content>
+                                <VBox fx:id="recentCreationsContainer" spacing="10">
+                                    <padding>
+                                        <Insets bottom="10" left="10" right="10" top="10"/>
+                                    </padding>
+                                </VBox>
+                            </content>
+                        </ScrollPane>
+                    </VBox>
+                </GridPane>
+
+                <!-- Security Alerts -->
+                <VBox styleClass="content-card" spacing="12">
+                    <Label text="Alertes de sécurité" styleClass="section-title"/>
+                    <ScrollPane fx:id="securityAlertsScrollPane" fitToWidth="true" styleClass="scroll-pane">
+                        <content>
+                            <VBox fx:id="securityAlertsContainer" spacing="10">
+                                <padding>
+                                    <Insets bottom="10" left="10" right="10" top="10"/>
+                                </padding>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <padding>
+        <Insets top="0" right="0" bottom="0" left="0"/>
+    </padding>
+</BorderPane>

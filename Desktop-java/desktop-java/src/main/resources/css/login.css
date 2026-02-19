@@ -1,0 +1,90 @@
+/* NEXUS Login - Modern Design */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.login-container {
+    -fx-background-color: white;
+    -fx-background-radius: 24;
+    -fx-padding: 48;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 30, 0, 0, 10);
+}
+
+.logo-container {
+    -fx-alignment: center;
+    -fx-padding: 0 0 24 0;
+}
+
+.logo-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #e94560 0%, #0f3460 100%);
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+    -fx-padding: 0 0 8 0;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #718096;
+    -fx-padding: 0 0 32 0;
+}
+
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a5568;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #f7fafc;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 14 18;
+    -fx-font-size: 14px;
+    -fx-pref-height: 44;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #e94560;
+    -fx-border-width: 2;
+}
+
+.btn-login {
+    -fx-background-color: linear-gradient(to right, #e94560 0%, #c73e54 100%);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 14 32;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.btn-login:hover {
+    -fx-background-color: linear-gradient(to right, #f05a75 0%, #e94560 100%);
+}
+
+.btn-login:disabled {
+    -fx-background-color: #cbd5e0;
+    -fx-text-fill: #718096;
+}
+
+.btn-cancel {
+    -fx-background-color: transparent;
+    -fx-text-fill: #718096;
+    -fx-font-size: 14px;
+    -fx-padding: 10 24;
+    -fx-cursor: hand;
+}
+
+.btn-cancel:hover {
+    -fx-text-fill: #1a1a2e;
+}

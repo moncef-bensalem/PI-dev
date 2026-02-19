@@ -18,8 +18,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 1024, 768);
-        stage.setTitle("NEXUS - Recruitment Platform");
+        // Start with login page (modern design with logo)
+        scene = new Scene(loadFXML("login"), 520, 680);
+        stage.setTitle("NEXUS - Connexion");
         stage.setScene(scene);
         stage.show();
     }

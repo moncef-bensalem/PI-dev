@@ -1,17 +1,28 @@
 package com.nexus.desktop.model;
 
 public class User {
-    private Long id;
+    private int id;
     private String email;
     private String firstName;
     private String lastName;
+    private String passwordHash;
     private String[] roles;
     private boolean active;
 
     // Constructors
     public User() {}
 
-    public User(Long id, String email, String firstName, String lastName, String[] roles, boolean active) {
+    public User(int id, String email, String firstName, String lastName, String passwordHash, String[] roles, boolean active) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.passwordHash = passwordHash;
+        this.roles = roles;
+        this.active = active;
+    }
+
+    public User(int id, String email, String firstName, String lastName, String[] roles, boolean active) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -21,11 +32,11 @@ public class User {
     }
 
     // Getters and setters
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -67,6 +78,14 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getFullName() {

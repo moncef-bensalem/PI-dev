@@ -1,10 +1,23 @@
 package com.nexus.desktop;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.nexus.desktop.model.User;
-import com.nexus.desktop.service.ApiService;
+import com.nexus.desktop.dao.UserDAO;
+import com.nexus.desktop.service.AuthenticationService;
+import com.nexus.desktop.util.DatabaseManager;
+import com.nexus.desktop.util.DashboardRouter;
+import com.nexus.desktop.util.TokenStorage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -12,7 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Map;
 
-public class PrimaryController {
+public class PrimaryController implements Initializable {
 
     @FXML
     private Label welcomeText;
@@ -23,10 +36,78 @@ public class PrimaryController {
     @FXML
     private Button exitButton;
 
-    private ApiService apiService;
+    private UserDAO userDAO;
+    private AuthenticationService authService;
 
-    public void initialize() {
-        apiService = new ApiService();
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (!DatabaseManager.isDatabaseAvailable()) {
+            welcomeText.setText("Database connection failed!");
+            loginButton.setDisable(true);
+            return;
+        }
+        userDAO = new UserDAO();
+        authService = new AuthenticationService();
+        welcomeText.setText("Welcome to NEXUS - Recruitment Platform");
+
+        // Remember Me: restore session from saved token (defer until scene is attached)
+        Platform.runLater(this::tryRestoreSession);
+    }
+
+    private void tryRestoreSession() {
+        String savedToken = TokenStorage.load();
+        if (savedToken == null || savedToken.isEmpty()) return;
+        try {
+            authService.restoreFromToken(savedToken);
+            User user = authService.getCurrentUser();
+            if (user != null && welcomeText.getScene() != null) {
+                redirectToDashboard(user, authService);
+            }
+        } catch (Exception e) {
+            TokenStorage.delete();
+        }
+    }
+    
+    /**
+     * Redirect to role-appropriate dashboard after successful login
+     */
+    private void redirectToDashboard(User user, AuthenticationService authService) throws IOException {
+        String dashboardPath = DashboardRouter.getDashboardForUser(user);
+        URL resourceUrl = getClass().getClassLoader().getResource(dashboardPath);
+        if (resourceUrl == null) {
+            throw new IOException("Dashboard FXML file not found: " + dashboardPath);
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(resourceUrl);
+        Parent dashboardRoot = loader.load();
+
+        // Set user and auth based on dashboard type
+        if (DashboardRouter.isCandidate(user)) {
+            com.nexus.desktop.controller.CandidateDashboardController controller = loader.getController();
+            controller.setCurrentUser(user);
+            controller.setAuthService(authService);
+        } else {
+            com.nexus.desktop.controller.DashboardController controller = loader.getController();
+            controller.setCurrentUser(user);
+            controller.setAuthService(authService);
+        }
+
+        Scene currentScene = welcomeText.getScene();
+        currentScene.setRoot(dashboardRoot);
+        Stage stage = (Stage) currentScene.getWindow();
+        stage.setTitle("NEXUS - " + (DashboardRouter.isCandidate(user) ? "Candidate" : "Admin") + " Dashboard - " + user.getFullName());
+    }
+    
+    /**
+     * Show alert dialog
+     */
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
@@ -80,41 +161,37 @@ public class PrimaryController {
                 String email = result[0];
                 String password = result[1];
 
-                // Attempt to log in using the actual API service
-                javafx.concurrent.Task<User> loginTask = new javafx.concurrent.Task<User>() {
+                // Authenticate with AuthenticationService (creates JWT for Remember Me)
+                javafx.concurrent.Task<javafx.util.Pair<User, AuthenticationService>> loginTask = new javafx.concurrent.Task<javafx.util.Pair<User, AuthenticationService>>() {
                     @Override
-                    protected User call() throws Exception {
+                    protected javafx.util.Pair<User, AuthenticationService> call() throws Exception {
                         try {
-                            Map<String, Object> response = apiService.login(email, password);
-                            
-                            if (Boolean.TRUE.equals(response.get("success"))) {
-                                // Extract user information from the API response
-                                JsonNode userNode = (JsonNode) response.get("user");
-                                if (userNode != null) {
-                                    User user = new User();
-                                    user.setId(userNode.get("id").asLong());
-                                    user.setEmail(userNode.get("email").asText());
-                                    user.setFirstName(userNode.get("fullName").asText());
-                                    user.setLastName("");
-                                    user.setActive(true);
-                                    return user;
-                                } else {
-                                    throw new RuntimeException("No user data in response");
-                                }
-                            } else {
-                                // Login failed
-                                String message = (String) response.get("message");
-                                throw new RuntimeException(message != null ? message : "Login failed");
+                            authService.authenticate(email, password);
+                            User user = authService.getCurrentUser();
+                            if (user != null) {
+                                return new javafx.util.Pair<>(user, authService);
                             }
-                        } catch (IOException e) {
-                            throw new RuntimeException("Network error: " + e.getMessage(), e);
+                            throw new RuntimeException("Invalid credentials");
+                        } catch (Exception e) {
+                            throw new RuntimeException("Database error: " + e.getMessage(), e);
                         }
                     }
                 };
 
-                loginTask.setOnSucceeded(e -> {
-                    User user = loginTask.getValue();
-                    welcomeText.setText("Welcome, " + user.getFullName() + "!");
+                loginTask.setOnSucceeded(ev -> {
+                    javafx.util.Pair<User, AuthenticationService> loginResult = loginTask.getValue();
+                    User user = loginResult.getKey();
+                    AuthenticationService service = loginResult.getValue();
+                    try {
+                        // Save token for Remember Me (persistent session)
+                        if (service.getCurrentToken() != null && service.getCurrentToken().getToken() != null) {
+                            TokenStorage.save(service.getCurrentToken().getToken());
+                        }
+                        redirectToDashboard(user, service);
+                    } catch (IOException ex) {
+                        showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load dashboard: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
                 });
 
                 loginTask.setOnFailed(e -> {

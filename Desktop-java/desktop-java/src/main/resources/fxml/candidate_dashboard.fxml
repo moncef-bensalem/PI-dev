@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.FontWeight?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="dashboardContainer"
+            stylesheets="@../css/candidate_dashboard.css"
+            fx:controller="com.nexus.desktop.controller.CandidateDashboardController"
+            style="-fx-background-color: #f0f4f8;">
+
+    <!-- Left Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar" prefWidth="240" minWidth="240">
+            <padding>
+                <Insets top="28" right="0" bottom="28" left="0"/>
+            </padding>
+            <Label text="NEXUS" styleClass="sidebar-title" style="-fx-font-size: 22px; -fx-font-weight: bold;">
+                <padding>
+                    <Insets bottom="8" left="24" right="24"/>
+                </padding>
+            </Label>
+            <Label text="Candidate Portal" style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 12px;">
+                <padding>
+                    <Insets bottom="24" left="24" right="24"/>
+                </padding>
+            </Label>
+            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+            <Button fx:id="profileNavBtn" text="👤  Mon Profil" styleClass="sidebar-button active" 
+                    onAction="#showProfileView" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button fx:id="applicationsNavBtn" text="📋  Mes Candidatures" styleClass="sidebar-button"
+                    onAction="#showApplicationsView" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+            <Button text="🚪  Déconnexion" styleClass="logout-button" 
+                    onAction="#onLogoutButtonClick" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <padding>
+                <Insets bottom="24" left="0" right="0"/>
+            </padding>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox fx:id="mainContent" styleClass="main-content" spacing="24">
+                <padding>
+                    <Insets top="32" right="32" bottom="32" left="32"/>
+                </padding>
+
+                <!-- Profile View -->
+                <VBox fx:id="profileView" spacing="24">
+                    <!-- Welcome Header -->
+                    <HBox spacing="20" alignment="CENTER_LEFT">
+                        <StackPane style="-fx-background-color: linear-gradient(135deg, #e94560 0%, #0f3460 100%); -fx-background-radius: 50; -fx-min-width: 72; -fx-min-height: 72;" alignment="CENTER">
+                            <Label fx:id="avatarLabel" text="JD" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                        </StackPane>
+                        <VBox spacing="4">
+                            <Label fx:id="welcomeLabel" text="Bienvenue," style="-fx-font-size: 14px; -fx-text-fill: #718096;"/>
+                            <Label fx:id="userNameLabel" text="John Doe" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+                            <Label fx:id="emailLabel" text="john@example.com" style="-fx-font-size: 14px; -fx-text-fill: #718096;"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Profile Card -->
+                    <VBox style="-fx-background-color: #0f3460; -fx-background-radius: 16; -fx-padding: 28; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 20, 0, 0, 4);" spacing="24">
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <Label text="Informations du profil" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+                            <Button fx:id="editProfileBtn" text="Modifier" styleClass="btn-secondary" onAction="#onEditProfileClick"/>
+                        </HBox>
+
+                        <!-- View Mode -->
+                        <GridPane fx:id="profileViewMode" hgap="24" vgap="16">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="140"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <Label text="Prénom" style="-fx-text-fill: #718096; -fx-font-weight: bold;"/>
+                            <Label fx:id="viewFirstName" text="-" GridPane.columnIndex="1"/>
+                            <Label text="Nom" style="-fx-text-fill: #718096; -fx-font-weight: bold;" GridPane.rowIndex="1"/>
+                            <Label fx:id="viewLastName" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label text="Email" style="-fx-text-fill: #718096; -fx-font-weight: bold;" GridPane.rowIndex="2"/>
+                            <Label fx:id="viewEmail" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        </GridPane>
+
+                        <!-- Edit Mode -->
+                        <VBox fx:id="profileEditMode" visible="false" managed="false" spacing="20">
+                            <GridPane hgap="20" vgap="16">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="120"/>
+                                    <ColumnConstraints hgrow="ALWAYS" prefWidth="300"/>
+                                </columnConstraints>
+                                <Label text="Prénom" style="-fx-text-fill: #4a5568; -fx-font-weight: bold;"/>
+                                <TextField fx:id="editFirstName" promptText="Prénom" GridPane.columnIndex="1"/>
+                                <Label text="Nom" style="-fx-text-fill: #4a5568; -fx-font-weight: bold;" GridPane.rowIndex="1"/>
+                                <TextField fx:id="editLastName" promptText="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label text="Email" style="-fx-text-fill: #4a5568; -fx-font-weight: bold;" GridPane.rowIndex="2"/>
+                                <TextField fx:id="editEmail" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            </GridPane>
+                            <HBox spacing="12">
+                                <Button text="Enregistrer" styleClass="btn-primary" onAction="#onSaveProfileClick"/>
+                                <Button text="Annuler" styleClass="btn-secondary" onAction="#onCancelEditClick"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Applications View -->
+                <VBox fx:id="applicationsView" visible="false" managed="false" spacing="24">
+                    <Label text="Mes Candidatures" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+                    <VBox style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 48; -fx-alignment: center; -fx-spacing: 16;" alignment="CENTER">
+                        <Label text="📋" style="-fx-font-size: 64px;"/>
+                        <Label text="Aucune candidature pour le moment" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1a1a2e;"/>
+                        <Label text="Consultez les offres d'emploi et postulez pour commencer" style="-fx-font-size: 14px; -fx-text-fill: #718096;"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <padding>
+        <Insets top="0" right="0" bottom="0" left="0"/>
+    </padding>
+</BorderPane>
