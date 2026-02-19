@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.18"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="conttrollers.AfficherPlanification"
+            prefWidth="1100.0" prefHeight="700.0">
+
+    <top>
+        <ToolBar>
+            <Button text="Refresh" onAction="#onRefresh"/>
+            <Label text="Planifications" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <!-- Cards container -->
+                <VBox fx:id="cardsBox" spacing="12" style="-fx-padding: 12;">
+                    <!-- cards are added dynamically -->
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
