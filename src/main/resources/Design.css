@@ -2,6 +2,11 @@
     -fx-background-color: #FAFAFA;
     -fx-font-family: "System";
     -fx-font-size: 13px;
+    -fx-text-fill: #212121;
+}
+
+.label {
+    -fx-text-fill: #212121;
 }
 
 .scroll-pane {
@@ -33,7 +38,8 @@
 
 .count {
     -fx-font-size: 13px;
-    -fx-text-fill: #757575;
+    -fx-text-fill: #616161;
+    -fx-font-weight: bold;
 }
 
 .error {
@@ -204,11 +210,15 @@
 
 .temporary-section {
     -fx-background-color: #FFF8E1;
-    -fx-border-color: #FFE082;
+    -fx-border-color: #FF8F00;
     -fx-border-width: 1px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-padding: 12px 15px;
+}
+
+.temporary-section .label {
+    -fx-text-fill: #BF360C;
 }
 
 .flowpane-cards {
@@ -217,12 +227,16 @@
 
 .card {
     -fx-background-color: white;
-    -fx-border-color: #E0E0E0;
+    -fx-border-color: #BDBDBD;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 10, 0, 0, 2);
     -fx-padding: 15px;
+}
+
+.card .label {
+    -fx-text-fill: #212121;
 }
 
 .card:hover {
@@ -314,7 +328,7 @@
 .stat-value-green  { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #4CAF50; }
 .stat-value-orange { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #FF9800; }
 .stat-value-purple { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #9C27B0; }
-.stat-caption { -fx-font-size: 12px; -fx-text-fill: #757575; }
+.stat-caption { -fx-font-size: 12px; -fx-text-fill: #424242; -fx-font-weight: bold; }
 
 .pie-chart {
     -fx-background-color: transparent;
@@ -346,5 +360,36 @@
 }
 
 .pie-chart .chart-legend-item {
-    -fx-text-fill: #424242;
+    -fx-text-fill: #212121;
+    -fx-font-weight: bold;
+}
+
+/* High contrast for list view cells */
+.list-view .list-cell {
+    -fx-text-fill: #212121;
+}
+
+/* High contrast for combo box */
+.combo-box .list-cell {
+    -fx-text-fill: #212121;
+}
+
+/* Table view high contrast */
+.table-view .cell {
+    -fx-text-fill: #212121;
+}
+
+/* Titled pane content high contrast */
+.titled-pane .content .label {
+    -fx-text-fill: #212121;
+}
+
+/* Detail pane high contrast */
+.detail-pane .label {
+    -fx-text-fill: #212121;
+}
+
+/* Scroll pane content high contrast */
+.scroll-pane .label {
+    -fx-text-fill: #212121;
 }
