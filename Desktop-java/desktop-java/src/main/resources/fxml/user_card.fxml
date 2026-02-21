@@ -7,18 +7,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserCardController" style="-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 5; -fx-background-radius: 5;">
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserCardController" styleClass="user-card-item">
    <children>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <children>
             <VBox HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="userNameLabel" text="User Name" textFill="#2c3e50">
+                  <Label fx:id="userNameLabel" text="User Name" styleClass="user-card-name">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="userEmailLabel" text="user@example.com" textFill="#7f8c8d">
+                  <Label fx:id="userEmailLabel" text="user@example.com" styleClass="user-card-email">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -27,12 +27,12 @@
             </VBox>
             <VBox alignment="CENTER_RIGHT">
                <children>
-                  <Label fx:id="userRoleLabel" style="-fx-background-color: #dbeafe; -fx-text-fill: #1a1a2e; -fx-padding: 2 8 2 8; -fx-background-radius: 10;" text="ROLE">
+                  <Label fx:id="userRoleLabel" styleClass="badge-admin" text="ROLE">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <Label fx:id="userStatusLabel" style="-fx-background-color: #bbf7d0; -fx-text-fill: #1a1a2e; -fx-padding: 2 8 2 8; -fx-background-radius: 10; -fx-margin-top: 5;" text="ACTIVE">
+                  <Label fx:id="userStatusLabel" styleClass="user-status-label" text="ACTIVE">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -46,22 +46,22 @@
       </HBox>
       <HBox alignment="CENTER_RIGHT" spacing="5.0">
          <children>
-            <Button fx:id="editCardButton" mnemonicParsing="false" style="-fx-background-color: #f39c12; -fx-text-fill: white;" text="Edit">
+            <Button fx:id="editCardButton" mnemonicParsing="false" styleClass="btn-action-edit" text="Edit">
                <font>
                   <Font size="11.0" />
                </font>
             </Button>
-            <Button fx:id="deleteCardButton" mnemonicParsing="false" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Deactivate">
+            <Button fx:id="deleteCardButton" mnemonicParsing="false" styleClass="btn-action-deactivate" text="Deactivate">
                <font>
                   <Font size="11.0" />
                </font>
             </Button>
-            <Button fx:id="activateCardButton" mnemonicParsing="false" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="Activate">
+            <Button fx:id="activateCardButton" mnemonicParsing="false" styleClass="btn-action-activate" text="Activate">
                <font>
                   <Font size="11.0" />
                </font>
             </Button>
-            <Button fx:id="deleteUserButton" mnemonicParsing="false" style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Delete">
+            <Button fx:id="deleteUserButton" mnemonicParsing="false" styleClass="btn-action-delete" text="Delete">
                <font>
                   <Font size="11.0" />
                </font>

@@ -1,0 +1,749 @@
+/* styles.css - Main stylesheet for Talent Management Application */
+
+/* ===== GLOBAL STYLES ===== */
+.root {
+    -fx-font-family: "System";
+}
+
+/* ===== BACKGROUND COLORS ===== */
+.bg-light {
+    -fx-background-color: #FAFAFA;
+}
+
+.bg-white {
+    -fx-background-color: white;
+}
+
+.bg-transparent {
+    -fx-background-color: transparent;
+}
+
+/* ===== GRADIENT HEADERS ===== */
+.header-gradient-blue-green {
+    -fx-background-color: linear-gradient(to right, #2196F3, #4CAF50);
+    -fx-padding: 25;
+}
+
+.header-blue {
+    -fx-background-color: #2196F3;
+    -fx-padding: 20;
+}
+
+.header-purple {
+    -fx-background-color: #673AB7;
+    -fx-padding: 20;
+}
+
+.header-deep-purple {
+    -fx-background-color: #9C27B0;
+    -fx-padding: 20;
+}
+
+.header-orange {
+    -fx-background-color: #FF9800;
+    -fx-padding: 20;
+}
+
+.header-cyan {
+    -fx-background-color: #00BCD4;
+    -fx-padding: 20;
+}
+
+/* ===== TEXT STYLES ===== */
+.text-white {
+    -fx-text-fill: white;
+}
+
+.text-white-opacity {
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.text-dark {
+    -fx-text-fill: #212121;
+}
+
+.text-gray {
+    -fx-text-fill: #424242;
+}
+
+.text-light-gray {
+    -fx-text-fill: #757575;
+}
+
+.text-blue {
+    -fx-text-fill: #2196F3;
+}
+
+.text-green {
+    -fx-text-fill: #4CAF50;
+}
+
+.text-orange {
+    -fx-text-fill: #FF9800;
+}
+
+.text-purple {
+    -fx-text-fill: #9C27B0;
+}
+
+.text-cyan {
+    -fx-text-fill: #00BCD4;
+}
+
+.text-deep-purple {
+    -fx-text-fill: #673AB7;
+}
+
+.text-pink {
+    -fx-text-fill: #E91E63;
+}
+
+.text-red {
+    -fx-text-fill: red;
+}
+
+/* Logo text styling */
+.logo-text {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* ===== FONT STYLES ===== */
+.font-bold {
+    -fx-font-weight: bold;
+}
+
+.font-size-28 {
+    -fx-font-size: 28px;
+}
+
+.font-size-24 {
+    -fx-font-size: 24px;
+}
+
+.font-size-20 {
+    -fx-font-size: 20px;
+}
+
+.font-size-18 {
+    -fx-font-size: 18px;
+}
+
+.font-size-16 {
+    -fx-font-size: 16px;
+}
+
+.font-size-14 {
+    -fx-font-size: 14px;
+}
+
+.font-size-13 {
+    -fx-font-size: 13px;
+}
+
+.font-size-12 {
+    -fx-font-size: 12px;
+}
+
+.font-size-11 {
+    -fx-font-size: 11px;
+}
+
+.font-size-32 {
+    -fx-font-size: 32px;
+}
+
+/* ===== BUTTON STYLES ===== */
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+
+.button-blue {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+}
+
+.button-cyan {
+    -fx-background-color: #00BCD4;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+}
+
+.button-purple {
+    -fx-background-color: #673AB7;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+}
+
+.button-gray {
+    -fx-background-color: #757575;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 15;
+}
+
+.button-green {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.button-orange {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 30;
+}
+
+.button-red {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 30;
+}
+
+.button-dark-gray {
+    -fx-background-color: #9E9E9E;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 30;
+}
+
+.button-large {
+    -fx-font-size: 14px;
+    -fx-padding: 10 30;
+}
+
+.button-medium {
+    -fx-padding: 8 20;
+}
+
+/* ===== CARD STYLES ===== */
+.card {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.card-light {
+    -fx-background-color: #F5F5F5;
+    -fx-padding: 20;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.card-stat-blue {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(33,150,243,0.2), 10, 0, 0, 2);
+}
+
+.card-stat-green {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.2), 10, 0, 0, 2);
+}
+
+.card-stat-orange {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.2), 10, 0, 0, 2);
+}
+
+.card-stat-purple {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(156,39,176,0.2), 10, 0, 0, 2);
+}
+
+.card-stat-light-blue {
+    -fx-background-color: #E3F2FD;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.card-stat-light-green {
+    -fx-background-color: #E8F5E9;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.card-stat-light-orange {
+    -fx-background-color: #FFF3E0;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.card-stat-light-purple {
+    -fx-background-color: #F3E5F5;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.card-stat-light-pink {
+    -fx-background-color: #FCE4EC;
+    -fx-padding: 15;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* ===== TOOLBAR STYLES ===== */
+.toolbar {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.filter-bar {
+    -fx-background-color: white;
+    -fx-padding: 12 15;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* ===== TEXT FIELD STYLES ===== */
+.search-field {
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+    -fx-border-radius: 20;
+    -fx-border-color: #E0E0E0;
+}
+
+/* ===== COMBOBOX STYLES ===== */
+.combo-box {
+    -fx-background-radius: 5;
+}
+
+/* ===== CONTAINER STYLES ===== */
+.padding-25 {
+    -fx-padding: 25;
+}
+
+.padding-30 {
+    -fx-padding: 30;
+}
+
+.padding-20 {
+    -fx-padding: 20;
+}
+
+.padding-10 {
+    -fx-padding: 10;
+}
+
+.spacing-20 {
+    -fx-spacing: 20;
+}
+
+.spacing-15 {
+    -fx-spacing: 15;
+}
+
+.spacing-10 {
+    -fx-spacing: 10;
+}
+
+.spacing-5 {
+    -fx-spacing: 5;
+}
+
+/* ===== GRID STYLES ===== */
+.grid-hgap-15 {
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+}
+
+.grid-hgap-20 {
+    -fx-hgap: 20;
+    -fx-vgap: 15;
+}
+
+.grid-hgap-30 {
+    -fx-hgap: 30;
+    -fx-vgap: 15;
+}
+
+/* ===== FLOWPANE STYLES ===== */
+.flowpane-cards {
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-padding: 10;
+}
+
+/* ===== TEXTAREA STYLES ===== */
+.textarea-details {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E0E0E0;
+}
+
+/* ===== SEPARATOR STYLES ===== */
+.separator {
+    /* Default separator style */
+}
+
+/* ===== DASHBOARD STYLES ===== */
+/* Dashboard specific styles */
+.dashboard-background {
+    -fx-background-color: linear-gradient(to bottom right, #f0f4f8 0%, #e2e8f0 100%);
+}
+
+.dashboard-content {
+    -fx-background-color: transparent;
+    -fx-padding: 28;
+}
+
+.dashboard-header {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 20, 0, 0, 4);
+    -fx-text-fill: #1a1a2e; /* Ensure text is readable */
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Stat cards with different colors - enhanced for better readability */
+.stat-card-primary {
+    -fx-background-color: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+    -fx-text-fill: #1a1a2e; /* Ensure text is readable on light background */
+}
+
+.stat-card-success {
+    -fx-background-color: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+    -fx-text-fill: #1a1a2e; /* Ensure text is readable on light background */
+}
+
+.stat-card-warning {
+    -fx-background-color: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+    -fx-text-fill: #1a1a2e; /* Ensure text is readable on light background */
+}
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Sidebar specific styles - improved readability */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom right, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    -fx-padding: 20 0 20 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 2, 0);
+}
+
+.sidebar-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(255,255,255,0.7);
+    -fx-padding: 0 20 20 20;
+}
+
+.sidebar-separator {
+    -fx-background-color: rgba(255,255,255,0.2);
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255,255,255,0.95); /* Better contrast */
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar-button-logout {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ff6b6b; /* More visible red */
+    -fx-font-size: 14px;
+    -fx-padding: 12 20;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.sidebar-button-logout:hover {
+    -fx-background-color: rgba(255,107,107,0.1);
+}
+
+/* Transparent background for charts */
+.transparent-background {
+    -fx-background-color: transparent;
+}
+
+/* Enhanced card styles for better readability */
+.card-content {
+    -fx-text-fill: #1a1a2e;
+}
+
+/* Transparent scroll pane */
+.transparent-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+/* ===== MODERN DASHBOARD STYLES ===== */
+
+/* Main Background */
+.modern-dashboard-bg {
+    -fx-background-color: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+    -fx-border-radius: 0 0 16 16;
+    -fx-background-radius: 0 0 16 16;
+}
+
+.logo-brand {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2196F3;
+}
+
+.user-button {
+    -fx-background-color: #f0f4f8;
+    -fx-text-fill: #424242;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.logout-button {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-cursor: hand;
+}
+
+/* Main Content Area */
+.main-content-area {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Welcome Card */
+.welcome-card {
+    -fx-background-color: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(33,150,243,0.2), 15, 0, 0, 5);
+}
+
+.welcome-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.welcome-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: rgba(255,255,255,0.9);
+}
+
+.refresh-button {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: rgba(255,255,255,0.3);
+    -fx-border-width: 1;
+}
+
+/* Modern Stat Cards */
+.stat-card-modern-blue {
+    -fx-background-color: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(33,150,243,0.2), 12, 0, 0, 4);
+}
+
+.stat-card-modern-green {
+    -fx-background-color: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.2), 12, 0, 0, 4);
+}
+
+.stat-card-modern-orange {
+    -fx-background-color: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.2), 12, 0, 0, 4);
+}
+
+.stat-card-modern-purple {
+    -fx-background-color: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(156,39,176,0.2), 12, 0, 0, 4);
+}
+
+.stat-icon-large {
+    -fx-font-size: 28px;
+}
+
+.stat-label-modern {
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-fill: rgba(255,255,255,0.9);
+}
+
+.stat-value-modern {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.trend-up {
+    -fx-font-size: 20px;
+    -fx-text-fill: #4CAF50;
+}
+
+.trend-neutral {
+    -fx-font-size: 20px;
+    -fx-text-fill: #FF9800;
+}
+
+/* Content Cards */
+.content-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+}
+
+.card-icon {
+    -fx-font-size: 20px;
+}
+
+.card-title-modern {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #212121;
+}
+
+.card-separator {
+    -fx-background-color: #E0E0E0;
+    -fx-padding: 8 0;
+}
+
+.card-action-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 8;
+}
+
+.chart-modern {
+    -fx-background-color: transparent;
+}
+
+/* Quick Actions Section */
+.quick-actions-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 15, 0, 0, 4);
+}
+
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #212121;
+    -fx-padding: 0 0 16 0;
+}
+
+/* Action Buttons */
+.action-button-blue {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+}
+
+.action-button-green {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+}
+
+.action-button-purple {
+    -fx-background-color: #9C27B0;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+}
+
+.action-button-orange {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+}
+
+.primary-button {
+    -fx-background-color: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 24;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(33,150,243,0.3), 10, 0, 0, 3);
+}

@@ -23,10 +23,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Dashboard Controller for User Management Module
@@ -233,15 +244,15 @@ public class DashboardController implements Initializable {
         if (alertSeverityLabel != null) alertSeverityLabel.setText(alert.getSeverity().toString());
         if (alertDateLabel != null) alertDateLabel.setText(alert.getTimestamp().toString());
         
-        // Set color based on severity
+        // Set CSS class based on severity for styling
         if (alertSeverityLabel != null) {
             String severity = alert.getSeverity();
             if ("HIGH".equals(severity)) {
-                alertSeverityLabel.setStyle("-fx-background-color: #fecaca; -fx-text-fill: #1a1a2e; -fx-padding: 3 10 3 10; -fx-background-radius: 15;");
+                alertSeverityLabel.getStyleClass().add("badge-high");
             } else if ("MEDIUM".equals(severity)) {
-                alertSeverityLabel.setStyle("-fx-background-color: #fef3c7; -fx-text-fill: #1a1a2e; -fx-padding: 3 10 3 10; -fx-background-radius: 15;");
+                alertSeverityLabel.getStyleClass().add("badge-medium");
             } else if ("LOW".equals(severity)) {
-                alertSeverityLabel.setStyle("-fx-background-color: #bbf7d0; -fx-text-fill: #1a1a2e; -fx-padding: 3 10 3 10; -fx-background-radius: 15;");
+                alertSeverityLabel.getStyleClass().add("badge-low");
             }
         }
         
@@ -343,8 +354,220 @@ public class DashboardController implements Initializable {
             return;
         }
         
-        // TODO: Implement PDF export functionality
-        showInfo("PDF export functionality will be implemented in next sprint");
+        try {
+            // Create file chooser to select save location
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Export Dashboard Data as PDF");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            fileChooser.setInitialFileName("nexus_admin_dashboard_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".pdf");
+            
+            File file = fileChooser.showSaveDialog(totalUsersLabel.getScene().getWindow());
+            if (file == null) {
+                // User cancelled the operation
+                return;
+            }
+            
+            // Generate dashboard data to include in PDF
+            Dashboard dashboard = dashboardService.generateDashboardData();
+            
+            // Create PDF document
+            PDDocument document = new PDDocument();
+            PDPage currentPage = new PDPage();
+            document.addPage(currentPage);
+            
+            // Add content to the first page
+            addPdfContent(document, currentPage, dashboard);
+            
+            // Save the PDF
+            document.save(file);
+            document.close();
+            
+            showInfo("Dashboard data exported successfully to " + file.getAbsolutePath());
+            
+        } catch (IOException e) {
+            showError("Error exporting to PDF: " + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            showError("Error retrieving dashboard data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Helper method to add content to PDF pages
+     */
+    private void addPdfContent(PDDocument document, PDPage firstPage, Dashboard dashboard) throws IOException {
+        PDPageContentStream contentStream = new PDPageContentStream(document, firstPage);
+        
+        // Title
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, 750);
+        contentStream.showText("NEXUS Admin Dashboard Report");
+        contentStream.endText();
+        
+        // Subtitle with timestamp
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, 730);
+        contentStream.showText("Generated on: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        contentStream.endText();
+        
+        // Current user info
+        if (currentUser != null) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 710);
+            contentStream.showText("Generated by: " + currentUser.getFullName() + " (" + currentUser.getEmail() + ")");
+            contentStream.endText();
+        }
+        
+        // Stats section
+        float yPos = 670;
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Dashboard Statistics");
+        contentStream.endText();
+        
+        yPos -= 20;
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Total Users: " + dashboard.getTotalUsers());
+        contentStream.endText();
+        
+        yPos -= 15;
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Active Users: " + dashboard.getActiveUsers());
+        contentStream.endText();
+        
+        yPos -= 15;
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("New Users This Month: " + dashboard.getNewUsersThisMonth());
+        contentStream.endText();
+        
+        // Role distribution
+        yPos -= 25;
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Role Distribution");
+        contentStream.endText();
+        
+        yPos -= 15;
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        for (String role : dashboard.getUsersByRole().keySet()) {
+            Long count = dashboard.getUsersByRole().get(role);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yPos);
+            contentStream.showText("- " + role + ": " + count + " users");
+            contentStream.endText();
+            yPos -= 15;
+            
+            // Check if we need a new page
+            if (yPos < 100) {
+                contentStream.endText();
+                contentStream.close();
+                
+                // Add new page
+                PDPage newPage = new PDPage();
+                document.addPage(newPage);
+                contentStream = new PDPageContentStream(document, newPage);
+                
+                yPos = 750;
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPos);
+                contentStream.showText("Continued: Role Distribution");
+                contentStream.endText();
+                
+                yPos -= 25;
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+            }
+        }
+        
+        // Recent user creations
+        yPos -= 25;
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Recent User Creations");
+        contentStream.endText();
+        
+        yPos -= 15;
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        for (Dashboard.UserCreation creation : dashboard.getRecentCreations()) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yPos);
+            contentStream.showText("- " + creation.getUserName() + " (" + creation.getUserEmail() + ") - Role: " + creation.getRole() + " - Date: " + creation.getCreatedAt());
+            contentStream.endText();
+            yPos -= 15;
+            
+            // Check if we need a new page
+            if (yPos < 100) {
+                contentStream.endText();
+                contentStream.close();
+                
+                // Add new page
+                PDPage newPage = new PDPage();
+                document.addPage(newPage);
+                contentStream = new PDPageContentStream(document, newPage);
+                
+                yPos = 750;
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPos);
+                contentStream.showText("Continued: Recent User Creations");
+                contentStream.endText();
+                
+                yPos -= 25;
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+            }
+        }
+        
+        // Security alerts
+        yPos -= 25;
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+        contentStream.beginText();
+        contentStream.newLineAtOffset(50, yPos);
+        contentStream.showText("Security Alerts");
+        contentStream.endText();
+        
+        yPos -= 15;
+        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        for (Dashboard.SecurityAlert alert : dashboard.getSecurityAlerts()) {
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yPos);
+            contentStream.showText("- [" + alert.getSeverity() + "] " + alert.getType() + ": " + alert.getDescription() + " - Date: " + alert.getTimestamp());
+            contentStream.endText();
+            yPos -= 15;
+            
+            // Check if we need a new page
+            if (yPos < 100) {
+                contentStream.endText();
+                contentStream.close();
+                
+                // Add new page
+                PDPage newPage = new PDPage();
+                document.addPage(newPage);
+                contentStream = new PDPageContentStream(document, newPage);
+                
+                yPos = 750;
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPos);
+                contentStream.showText("Continued: Security Alerts");
+                contentStream.endText();
+                
+                yPos -= 25;
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+            }
+        }
+        
+        contentStream.endText();
+        contentStream.close();
     }
     
     /**

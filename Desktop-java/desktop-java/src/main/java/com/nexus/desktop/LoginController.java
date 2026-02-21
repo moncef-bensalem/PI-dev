@@ -55,7 +55,9 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadLogo();
         if (!DatabaseManager.isDatabaseAvailable()) {
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Cannot connect to database. Please check your database configuration.");
+            System.err.println("Database not available - running in offline mode");
+            // Setup basic UI without database
+            setupOfflineMode();
             return;
         }
         userDAO = new UserDAO();
@@ -66,6 +68,15 @@ public class LoginController implements Initializable {
 
         // Try automatic login from persistent token (Remember Me)
         tryAutoLoginFromToken();
+    }
+    
+    private void setupOfflineMode() {
+        loginButton.setText("Database Unavailable");
+        loginButton.setDisable(true);
+        loginButton.setStyle("-fx-background-color: #dc3545;");
+        // Setup basic event handlers for UI elements
+        loginButton.setOnAction(e -> showAlert(Alert.AlertType.ERROR, "Database Error", "Cannot connect to database. Please check your database configuration and restart the application."));
+        cancelButton.setOnAction(e -> onCancelClick(e));
     }
 
     private void loadLogo() {

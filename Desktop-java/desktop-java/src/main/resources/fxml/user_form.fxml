@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserFormController">
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserFormController" stylesheets="@../css/admin_dashboard.css" styleClass="dashboard-background">
    <children>
-      <Label fx:id="formTitle" text="Add New User">
+      <Label fx:id="formTitle" text="Add New User" styleClass="dashboard-header">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -37,34 +37,34 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="First Name:" GridPane.rowIndex="0" />
-            <TextField fx:id="firstNameField" promptText="Enter first name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="First Name:" styleClass="text-light-gray" GridPane.rowIndex="0" />
+            <TextField fx:id="firstNameField" promptText="Enter first name" styleClass="search-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             
-            <Label text="Last Name:" GridPane.rowIndex="1" />
-            <TextField fx:id="lastNameField" promptText="Enter last name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Last Name:" styleClass="text-light-gray" GridPane.rowIndex="1" />
+            <TextField fx:id="lastNameField" promptText="Enter last name" styleClass="search-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             
-            <Label text="Email:" GridPane.rowIndex="2" />
-            <TextField fx:id="emailField" promptText="Enter email address" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Email:" styleClass="text-light-gray" GridPane.rowIndex="2" />
+            <TextField fx:id="emailField" promptText="Enter email address" styleClass="search-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             
-            <Label text="Role:" GridPane.rowIndex="3" />
-            <ComboBox fx:id="roleComboBox" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Role:" styleClass="text-light-gray" GridPane.rowIndex="3" />
+            <ComboBox fx:id="roleComboBox" prefWidth="200.0" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             
-            <Label text="Password:" GridPane.rowIndex="4" />
+            <Label text="Password:" styleClass="text-light-gray" GridPane.rowIndex="4" />
             <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <PasswordField fx:id="passwordField" promptText="Enter password" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="generatePasswordButton" mnemonicParsing="false" onAction="#onGeneratePasswordClick" text="Generate" />
+                  <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="search-field" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="generatePasswordButton" mnemonicParsing="false" onAction="#onGeneratePasswordClick" text="Generate" styleClass="button-cyan" />
                </children>
             </HBox>
             
-            <Label text="Status:" GridPane.rowIndex="5" />
-            <ComboBox fx:id="statusComboBox" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Status:" styleClass="text-light-gray" GridPane.rowIndex="5" />
+            <ComboBox fx:id="statusComboBox" prefWidth="200.0" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <HBox alignment="CENTER_RIGHT" spacing="15.0">
          <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelClick" text="Cancel" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveClick" text="Save User">
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelClick" text="Cancel" styleClass="button-red" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveClick" text="Save User" styleClass="button-cyan">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

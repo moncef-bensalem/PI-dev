@@ -25,7 +25,8 @@ public class DatabaseManager {
             // Load database configuration
             InputStream input = DatabaseManager.class.getClassLoader().getResourceAsStream("database.properties");
             if (input == null) {
-                throw new RuntimeException("Unable to find database.properties file");
+                System.err.println("WARNING: Unable to find database.properties file");
+                return;
             }
             
             dbProperties.load(input);
@@ -64,9 +65,11 @@ public class DatabaseManager {
             
             System.out.println("Database connection pool initialized successfully");
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load database configuration", e);
+            System.err.println("WARNING: Failed to load database configuration: " + e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize database connection pool", e);
+            System.err.println("WARNING: Database connection failed - running in offline mode: " + e.getMessage());
+            // Don't throw exception, allow application to run without database
+            dataSource = null;
         }
     }
 

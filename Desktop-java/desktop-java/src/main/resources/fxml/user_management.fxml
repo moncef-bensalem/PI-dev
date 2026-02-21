@@ -11,47 +11,47 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserManagementController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nexus.desktop.controller.UserManagementController" stylesheets="@../css/admin_dashboard.css" styleClass="dashboard-background">
    <top>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="User Management">
+                  <Label text="User Management" styleClass="dashboard-header">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh">
+                        <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh" styleClass="btn-refresh">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="onCloseButtonClick" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close" />
+                        <Button fx:id="onCloseButtonClick" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close" styleClass="btn-action-delete" />
                      </children>
                   </HBox>
                </children>
             </HBox>
             <HBox spacing="15.0">
                <children>
-                  <TextField fx:id="searchField" prefWidth="300.0" promptText="Search by name or email..." />
-                  <ComboBox fx:id="roleFilter" prefWidth="150.0" promptText="Filter by Role" />
-                  <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Filter by Status" />
+                  <TextField fx:id="searchField" prefWidth="300.0" promptText="Search by name or email..." styleClass="search-field" />
+                  <ComboBox fx:id="roleFilter" prefWidth="150.0" promptText="Filter by Role" styleClass="combo-box" />
+                  <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Filter by Status" styleClass="combo-box" />
                   <HBox HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddUserClick" text="Add User">
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddUserClick" text="Add User" styleClass="btn-action-activate">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#onEditUserClick" text="Edit User">
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#onEditUserClick" text="Edit User" styleClass="btn-action-edit">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteUserClick" text="Deactivate" textFill="RED" />
-                  <Button fx:id="activateButton" mnemonicParsing="false" onAction="#onActivateUserClick" text="Activate" textFill="GREEN" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteUserClick" text="Deactivate" styleClass="button-red" />
+                  <Button fx:id="activateButton" mnemonicParsing="false" onAction="#onActivateUserClick" text="Activate" styleClass="button-green" />
                </children>
             </HBox>
          </children>
@@ -63,7 +63,7 @@
    <center>
       <ScrollPane fx:id="usersScrollPane" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
-            <VBox fx:id="usersContainer" spacing="10.0">
+            <VBox fx:id="usersContainer" spacing="10.0" styleClass="dashboard-card">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
