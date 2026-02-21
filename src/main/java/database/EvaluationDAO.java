@@ -60,12 +60,8 @@ public class EvaluationDAO implements Services<Evaluation> {
             pstm.setInt(5, evaluation.getFkRecruteurId());
             pstm.setInt(6, evaluation.getIdEvaluation());
             pstm.executeUpdate();
-
-            if (evaluation.getScoreCompetences() != null) {
-                for (ScoreCompetence sc : evaluation.getScoreCompetences()) {
-                    scoreCompetenceDAO.addWithEvaluationId(sc, evaluation.getIdEvaluation());
-                }
-            }
+            // Note: Score competences are managed separately via ScoreCompetenceDAO
+            // (add/delete operations in UpdateEvaluationController)
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
