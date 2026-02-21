@@ -17,41 +17,41 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Label fx:id="idLabel" styleClass="title" text="Evaluation #" />
+            <Label fx:id="idLabel" styleClass="title" text="Évaluation #" />
             <Separator prefWidth="200.0" />
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Created:" />
+                  <Label styleClass="section" text="Créée le :" />
                   <Label fx:id="dateLabel" text="-" />
                </children>
             </HBox>
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Decision:" />
+                  <Label styleClass="section" text="Décision :" />
                   <Label fx:id="decisionLabel" text="-" />
                </children>
             </HBox>
             <VBox spacing="5.0">
                <children>
-                  <Label styleClass="section" text="Comment:" />
+                  <Label styleClass="section" text="Commentaire :" />
                   <Label fx:id="commentLabel" text="-" wrapText="true" />
                </children>
             </VBox>
             <Separator prefWidth="200.0" />
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Interview ID:" />
+                  <Label styleClass="section" text="ID Entretien :" />
                   <Label fx:id="entretienLabel" text="-" />
                </children>
             </HBox>
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Recruiter ID:" />
+                  <Label styleClass="section" text="ID Recruteur :" />
                   <Label fx:id="recruteurLabel" text="-" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <Label styleClass="subtitle" text="Competences" />
+            <Label styleClass="subtitle" text="Compétences" />
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
                   <ListView fx:id="scoreCompetenceListView" prefHeight="255.0" prefWidth="455.0" />
@@ -62,9 +62,9 @@
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
-                  <Button onAction="#deleteEvaluation" styleClass="danger" text="Delete" />
-                  <Button onAction="#openUpdateEvaluation" styleClass="warning" text="Update" />
-                  <Button onAction="#close" styleClass="info" text="Close" />
+                  <Button onAction="#deleteEvaluation" styleClass="danger" text="Supprimer" />
+                  <Button onAction="#openUpdateEvaluation" styleClass="warning" text="Modifier" />
+                  <Button onAction="#close" styleClass="info" text="Fermer" />
                </children>
             </HBox>
          </children>

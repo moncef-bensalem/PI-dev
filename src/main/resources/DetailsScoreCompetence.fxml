@@ -15,23 +15,23 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Label fx:id="idLabel" styleClass="title" text="Competence #" />
+            <Label fx:id="idLabel" styleClass="title" text="Compétence #" />
             <Separator prefWidth="200.0" />
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Criteria:" />
+                  <Label styleClass="section" text="Critère :" />
                   <Label fx:id="critereLabel" text="-" />
                </children>
             </HBox>
             <HBox spacing="10.0">
                <children>
-                  <Label styleClass="section" text="Note:" />
+                  <Label styleClass="section" text="Note :" />
                   <Label fx:id="noteLabel" styleClass="subtitle" text="-" />
                </children>
             </HBox>
             <VBox spacing="5.0">
                <children>
-                  <Label styleClass="section" text="Appreciation:" />
+                  <Label styleClass="section" text="Appréciation :" />
                   <Label fx:id="appreciationLabel" text="-" wrapText="true" />
                </children>
             </VBox>
@@ -41,9 +41,9 @@
                   <Insets top="10.0" />
                </VBox.margin>
                <children>
-                  <Button onAction="#deleteScoreCompetence" styleClass="danger" text="Delete" />
-                  <Button onAction="#openUpdate" styleClass="warning" text="Update" />
-                  <Button onAction="#close" styleClass="info" text="Close" />
+                  <Button onAction="#deleteScoreCompetence" styleClass="danger" text="Supprimer" />
+                  <Button onAction="#openUpdate" styleClass="warning" text="Modifier" />
+                  <Button onAction="#close" styleClass="info" text="Fermer" />
                </children>
             </HBox>
          </children>

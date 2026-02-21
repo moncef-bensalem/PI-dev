@@ -24,20 +24,20 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
-                  <Label styleClass="title" text="Update Evaluation" />
+                  <Label styleClass="title" text="Modifier l'Évaluation" />
 
                   <VBox spacing="5.0">
                      <children>
-                        <Label text="Global Comment *" />
-                        <TextField fx:id="commentaireGlobalField" promptText="Enter global comment" />
+                        <Label text="Commentaire Global *" />
+                        <TextField fx:id="commentaireGlobalField" promptText="Entrez le commentaire global" />
                         <Label fx:id="commentaireErrorLabel" styleClass="error" text="" />
                      </children>
                   </VBox>
 
                   <VBox spacing="5.0">
                      <children>
-                        <Label text="Preliminary Decision *" />
-                        <ComboBox fx:id="decisionPreliminaireCombo" prefWidth="300.0" promptText="Select decision" />
+                        <Label text="Décision Préliminaire *" />
+                        <ComboBox fx:id="decisionPreliminaireCombo" prefWidth="300.0" promptText="Sélectionnez la décision" />
                         <Label fx:id="decisionErrorLabel" styleClass="error" text="" />
                      </children>
                   </VBox>
@@ -46,20 +46,20 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
-                              <Label styleClass="subtitle" text="Competence Scores" />
+                              <Label styleClass="subtitle" text="Scores des Compétences" />
                               <HBox HBox.hgrow="ALWAYS" />
-                              <Button fx:id="addScoreButton" onAction="#handleAddScoreCompetence" text="+ Add Score" />
+                              <Button fx:id="addScoreButton" onAction="#handleAddScoreCompetence" text="+ Ajouter un Score" />
                            </children>
                         </HBox>
-                        <Label fx:id="scoreCountLabel" styleClass="count" text="0 competence score(s)" />
+                        <Label fx:id="scoreCountLabel" styleClass="count" text="0 score(s) de compétence" />
                         <ListView fx:id="scoreCompetencesListView" prefHeight="150.0" />
                      </children>
                   </VBox>
 
                   <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>
-                        <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel" />
-                        <Button fx:id="saveButton" onAction="#handleSave" text="Save Changes" />
+                        <Button fx:id="cancelButton" onAction="#handleCancel" text="Annuler" />
+                        <Button fx:id="saveButton" onAction="#handleSave" text="Enregistrer les Modifications" />
                      </children>
                   </HBox>
                </children>

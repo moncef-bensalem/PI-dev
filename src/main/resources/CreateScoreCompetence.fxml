@@ -15,35 +15,35 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Label styleClass="title" text="Add Competence's Score" />
+            <Label styleClass="title" text="Ajouter un Score de Compétence" />
 
             <VBox spacing="5.0">
                <children>
-                  <Label text="Criteria Name *" />
-                  <TextField fx:id="nomCritereField" promptText="Enter criteria name" />
+                  <Label text="Nom du Critère *" />
+                  <TextField fx:id="nomCritereField" promptText="Entrez le nom du critère" />
                   <Label fx:id="nomCritereErrorLabel" styleClass="error" text="" />
                </children>
             </VBox>
 
             <VBox spacing="5.0">
                <children>
-                  <Label text="Score (0-20) *" />
-                  <TextField fx:id="noteAttribueeField" promptText="Enter score between 0 and 20" />
+                  <Label text="Note (0-20) *" />
+                  <TextField fx:id="noteAttribueeField" promptText="Entrez une note entre 0 et 20" />
                   <Label fx:id="noteErrorLabel" styleClass="error" text="" />
                </children>
             </VBox>
 
             <VBox spacing="5.0">
                <children>
-                  <Label text="Specific Appreciation (Optional)" />
-                  <TextField fx:id="appreciationSpecifiqueField" promptText="Enter specific appreciation" />
+                  <Label text="Appréciation Spécifique (Optionnel)" />
+                  <TextField fx:id="appreciationSpecifiqueField" promptText="Entrez l'appréciation spécifique" />
                </children>
             </VBox>
 
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                <children>
-                  <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel" />
-                  <Button fx:id="saveButton" onAction="#handleSave" text="Save" />
+                  <Button fx:id="cancelButton" onAction="#handleCancel" text="Annuler" />
+                  <Button fx:id="saveButton" onAction="#handleSave" text="Enregistrer" />
                </children>
             </HBox>
          </children>

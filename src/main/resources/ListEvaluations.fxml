@@ -23,26 +23,26 @@
             <!-- Header with Title and Add Button -->
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <Label styleClass="title" text="Evaluations" />
+                  <Label styleClass="title" text="Évaluations" />
                   <HBox HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addButton" onAction="#handleAddEvaluation" text="+ Add Evaluation" />
+                  <Button fx:id="addButton" onAction="#handleAddEvaluation" text="+ Ajouter une Évaluation" />
                </children>
             </HBox>
             
             <!-- Search, Filter, and Sort Controls -->
             <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="toolbar">
                <children>
-                  <TextField fx:id="searchField" promptText="Search evaluations..." HBox.hgrow="ALWAYS" />
-                  <ComboBox fx:id="filterComboBox" prefWidth="150.0" promptText="Filter by decision" />
-                  <Button fx:id="sortButton" onAction="#handleSortByDecision" text="Sort by Decision" />
-                  <Button fx:id="clearFiltersButton" onAction="#handleClearFilters" text="Clear" />
+                  <TextField fx:id="searchField" promptText="Rechercher des évaluations..." HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="filterComboBox" prefWidth="150.0" promptText="Filtrer par décision" />
+                  <Button fx:id="sortButton" onAction="#handleSortByDecision" text="Trier par Décision" />
+                  <Button fx:id="clearFiltersButton" onAction="#handleClearFilters" text="Effacer" />
                </children>
             </HBox>
             
             <!-- Total Count -->
             <HBox spacing="10.0">
                <children>
-                  <Label fx:id="totalEvaluationsLabel" styleClass="count" text="Total: 0 evaluations" />
+                  <Label fx:id="totalEvaluationsLabel" styleClass="count" text="Total : 0 évaluation(s)" />
                </children>
             </HBox>
             
@@ -60,7 +60,7 @@
       </VBox>
       
       <!-- Minimizable Pie Chart Popup (Bottom Right Corner) -->
-      <TitledPane fx:id="pieChartPopup" animated="true" collapsible="true" expanded="true" prefWidth="300.0" text="Decision Statistics" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <TitledPane fx:id="pieChartPopup" animated="true" collapsible="true" expanded="true" prefWidth="300.0" text="Statistiques des Décisions" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <content>
             <VBox spacing="10.0">
                <padding>
