@@ -83,13 +83,22 @@ public class ListEvaluationsController implements Initializable {
 
     private void setupFilterComboBox() {
         filterComboBox.setItems(FXCollections.observableArrayList(
-            "All",
-            "FAVORABLE",
-            "DEFAVORABLE",
-            "A_REVOIR"
+            "Tous",
+            "Favorables",
+            "Défavorables",
+            "à revoir"
         ));
-        filterComboBox.setValue("All");
+        filterComboBox.setValue("Tous");
         filterComboBox.setOnAction(event -> applyFilters());
+    }
+
+    private boolean matchesDecisionFilter(String filterValue, Evaluation.DecisionPreliminaire decision) {
+        return switch (filterValue) {
+            case "Favorables" -> decision == Evaluation.DecisionPreliminaire.FAVORABLE;
+            case "Défavorables" -> decision == Evaluation.DecisionPreliminaire.DEFAVORABLE;
+            case "à revoir" -> decision == Evaluation.DecisionPreliminaire.A_REVOIR;
+            default -> false;
+        };
     }
 
     private void setupSearchField() {
@@ -112,8 +121,8 @@ public class ListEvaluationsController implements Initializable {
                     String.valueOf(e.getFkRecruteurId()).contains(searchText);
                 
                 // Decision filter
-                boolean matchesFilter = "All".equals(filterValue) || 
-                    e.getDecisionPreliminaire().toString().equals(filterValue);
+                boolean matchesFilter = "Tous".equals(filterValue) || 
+                    matchesDecisionFilter(filterValue, e.getDecisionPreliminaire());
                 
                 return matchesSearch && matchesFilter;
             })
@@ -143,7 +152,7 @@ public class ListEvaluationsController implements Initializable {
     @FXML
     private void handleClearFilters() {
         searchField.clear();
-        filterComboBox.setValue("All");
+        filterComboBox.setValue("Tous");
         displayedEvaluations.setAll(allEvaluations);
         sortAscending = true;
         refreshGrid();
