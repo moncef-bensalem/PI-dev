@@ -134,11 +134,11 @@ public class DetailsEvaluationController implements Initializable {
     private void populateFields() {
         if (evaluation != null) {
             if (idLabel != null) idLabel.setText("Evaluation #" + evaluation.getIdEvaluation());
-            if (dateLabel != null) dateLabel.setText("Created: " + evaluation.getDateCreation().format(dateFormatter));
-            if (decisionLabel != null) decisionLabel.setText("Decision: " + evaluation.getDecisionPreliminaire().toString());
-            if (commentLabel != null) commentLabel.setText("Comment: " + (evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment"));
-            if (entretienLabel != null) entretienLabel.setText("Interview ID: " + evaluation.getFkEntretienId());
-            if (recruteurLabel != null) recruteurLabel.setText("Recruiter ID: " + evaluation.getFkRecruteurId());
+            if (dateLabel != null) dateLabel.setText(evaluation.getDateCreation().format(dateFormatter));
+            if (decisionLabel != null) decisionLabel.setText(evaluation.getDecisionPreliminaire().toString());
+            if (commentLabel != null) commentLabel.setText(evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment");
+            if (entretienLabel != null) entretienLabel.setText(String.valueOf(evaluation.getFkEntretienId()));
+            if (recruteurLabel != null) recruteurLabel.setText(String.valueOf(evaluation.getFkRecruteurId()));
         }
     }
 

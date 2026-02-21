@@ -87,10 +87,10 @@ public class DetailsScoreCompetenceController implements Initializable {
 
     private void populateFields() {
         if (scoreCompetence != null) {
-            if (idLabel != null) idLabel.setText("Score Competence #" + scoreCompetence.getIdDetail());
-            if (critereLabel != null) critereLabel.setText("Criteria: " + scoreCompetence.getNomCritere());
-            if (noteLabel != null) noteLabel.setText("Note: " + scoreCompetence.getNoteAttribuee() + "/20");
-            if (appreciationLabel != null) appreciationLabel.setText("Appreciation: " + (scoreCompetence.getAppreciationSpecifique() != null ? scoreCompetence.getAppreciationSpecifique() : "N/A"));
+            if (idLabel != null) idLabel.setText("Competence #" + scoreCompetence.getIdDetail());
+            if (critereLabel != null) critereLabel.setText(scoreCompetence.getNomCritere());
+            if (noteLabel != null) noteLabel.setText(scoreCompetence.getNoteAttribuee() + "/20");
+            if (appreciationLabel != null) appreciationLabel.setText(scoreCompetence.getAppreciationSpecifique() != null ? scoreCompetence.getAppreciationSpecifique() : "N/A");
         }
     }
 
