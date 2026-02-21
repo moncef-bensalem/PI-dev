@@ -173,14 +173,13 @@ public class ListEvaluationsController implements Initializable {
         header.setAlignment(Pos.CENTER_LEFT);
 
         Label idLabel = new Label("Evaluation #" + evaluation.getIdEvaluation());
-        idLabel.getStyleClass().addAll("font-size-16", "font-bold", "text-dark");
+        idLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #212121;");
 
         Circle decisionIndicator = new Circle(8);
         decisionIndicator.setFill(getDecisionColor(evaluation.getDecisionPreliminaire()));
 
         Label decisionLabel = new Label(evaluation.getDecisionPreliminaire().toString());
-        decisionLabel.getStyleClass().addAll("font-size-12", "font-bold");
-        decisionLabel.setStyle("-fx-text-fill: " + getDecisionHexColor(evaluation.getDecisionPreliminaire()) + ";");
+        decisionLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + getDecisionHexColor(evaluation.getDecisionPreliminaire()) + ";");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -197,10 +196,10 @@ public class ListEvaluationsController implements Initializable {
         header.getChildren().addAll(idLabel, decisionIndicator, decisionLabel, spacer, deleteButton);
 
         Label dateLabel = new Label("Created: " + evaluation.getDateCreation().format(dateFormatter));
-        dateLabel.getStyleClass().addAll("font-size-12", "text-gray");
+        dateLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #424242;");
 
         Label commentLabel = new Label("Comment: " + (evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment"));
-        commentLabel.getStyleClass().addAll("font-size-13", "text-dark");
+        commentLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #212121;");
         commentLabel.setWrapText(true);
         commentLabel.setMaxHeight(40);
 
@@ -208,10 +207,10 @@ public class ListEvaluationsController implements Initializable {
         footer.setAlignment(Pos.CENTER_LEFT);
 
         Label entretienLabel = new Label("Interview ID: " + evaluation.getFkEntretienId());
-        entretienLabel.getStyleClass().addAll("font-size-11", "text-light-gray");
+        entretienLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #616161;");
 
         Label recruteurLabel = new Label("Recruiter ID: " + evaluation.getFkRecruteurId());
-        recruteurLabel.getStyleClass().addAll("font-size-11", "text-light-gray");
+        recruteurLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #616161;");
 
         footer.getChildren().addAll(entretienLabel, recruteurLabel);
 

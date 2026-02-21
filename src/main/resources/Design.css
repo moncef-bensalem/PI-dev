@@ -230,6 +230,40 @@
     -fx-border-color: #90CAF9;
 }
 
+/* Decision-specific card styles with colored backgrounds */
+.card-favorable {
+    -fx-background-color: #E8F5E9;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2px;
+}
+
+.card-favorable:hover {
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.30), 14, 0, 0, 3);
+    -fx-border-color: #388E3C;
+}
+
+.card-defavorable {
+    -fx-background-color: #FFEBEE;
+    -fx-border-color: #F44336;
+    -fx-border-width: 2px;
+}
+
+.card-defavorable:hover {
+    -fx-effect: dropshadow(gaussian, rgba(244,67,54,0.30), 14, 0, 0, 3);
+    -fx-border-color: #D32F2F;
+}
+
+.card-arevoir {
+    -fx-background-color: #FFF3E0;
+    -fx-border-color: #FF9800;
+    -fx-border-width: 2px;
+}
+
+.card-arevoir:hover {
+    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.30), 14, 0, 0, 3);
+    -fx-border-color: #F57C00;
+}
+
 .titled-pane {
     -fx-border-color: #E0E0E0;
     -fx-border-width: 1px;
