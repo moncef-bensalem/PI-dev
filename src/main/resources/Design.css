@@ -239,7 +239,7 @@
 }
 
 .titled-pane > .title {
-    -fx-background-color: linear-gradient(to right, #2196F3, #4CAF50);
+    -fx-background-color: #2196F3;
     -fx-background-radius: 8px 8px 0 0;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -281,3 +281,36 @@
 .stat-value-orange { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #FF9800; }
 .stat-value-purple { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #9C27B0; }
 .stat-caption { -fx-font-size: 12px; -fx-text-fill: #757575; }
+
+.pie-chart {
+    -fx-background-color: transparent;
+    -fx-pie-label-visible: false;
+    -fx-effect: null;
+}
+
+.pie-chart .chart-content {
+    -fx-effect: null;
+}
+
+.pie-chart .chart-pie {
+    -fx-background-color: -fx-pie-color;
+    -fx-background-insets: 0;
+    -fx-border-color: null;
+    -fx-effect: null;
+    -fx-background-radius: 0;
+}
+
+.pie-chart .chart-pie:hover {
+    -fx-background-color: -fx-pie-color;
+    -fx-effect: null;
+}
+
+.pie-chart .chart-legend {
+    -fx-background-color: transparent;
+    -fx-border-color: null;
+    -fx-padding: 5;
+}
+
+.pie-chart .chart-legend-item {
+    -fx-text-fill: #424242;
+}
