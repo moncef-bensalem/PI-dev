@@ -154,9 +154,9 @@ public class DetailsEvaluationController implements Initializable {
 
     private VBox createScoreCompetenceCard(ScoreCompetence score) {
         VBox card = new VBox(5);
-        card.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #ddd; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 10; -fx-cursor: hand;");
+        card.getStyleClass().add("card-light");
         card.setPrefWidth(440);
-
+        card.setCursor(javafx.scene.Cursor.HAND);
 
         card.setOnMouseClicked(event -> openScoreCompetenceDetails(score));
 
@@ -164,16 +164,16 @@ public class DetailsEvaluationController implements Initializable {
         header.setAlignment(Pos.CENTER_LEFT);
 
         Label critereLabel = new Label(score.getNomCritere());
-        critereLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        critereLabel.getStyleClass().addAll("font-size-14", "font-bold", "text-dark");
 
         Label noteLabel = new Label("Note: " + score.getNoteAttribuee() + "/20");
-        noteLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #2196F3; -fx-font-weight: bold;");
+        noteLabel.getStyleClass().addAll("font-size-13", "font-bold", "text-blue");
 
         HBox.setHgrow(critereLabel, Priority.ALWAYS);
         critereLabel.setMaxWidth(Double.MAX_VALUE);
 
         Button deleteButton = new Button("Delete");
-        deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 4 12; -fx-background-radius: 4;");
+        deleteButton.getStyleClass().addAll("button", "button-red");
         deleteButton.setOnAction(event -> {
             event.consume();
             deleteScoreCompetence(score);
@@ -182,7 +182,7 @@ public class DetailsEvaluationController implements Initializable {
         header.getChildren().addAll(critereLabel, noteLabel, deleteButton);
 
         Label appreciationLabel = new Label("Appreciation: " + (score.getAppreciationSpecifique() != null ? score.getAppreciationSpecifique() : "N/A"));
-        appreciationLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+        appreciationLabel.getStyleClass().addAll("font-size-12", "text-gray");
         appreciationLabel.setWrapText(true);
 
         card.getChildren().addAll(header, appreciationLabel);

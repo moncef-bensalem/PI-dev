@@ -51,7 +51,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <Label styleClass="subtitle" text="Score Competences" />
+            <Label styleClass="subtitle" text="Competences" />
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                <content>
                   <ListView fx:id="scoreCompetenceListView" prefHeight="255.0" prefWidth="455.0" />

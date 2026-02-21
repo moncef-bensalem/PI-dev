@@ -7,7 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Evaluation;
@@ -71,13 +77,30 @@ public class CreateEvaluationController implements Initializable {
                 super.updateItem(score, empty);
                 if (empty || score == null) {
                     setText(null);
+                    setGraphic(null);
                 } else {
-                    setText(String.format("%s: %.1f/20%s",
+                    javafx.scene.layout.HBox hbox = new javafx.scene.layout.HBox(10);
+                    hbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+                    Label infoLabel = new Label(String.format("%s: %.1f/20%s",
                             score.getNomCritere(),
                             score.getNoteAttribuee(),
                             score.getAppreciationSpecifique() != null && !score.getAppreciationSpecifique().isEmpty()
                                     ? " - " + score.getAppreciationSpecifique()
                                     : ""));
+                    infoLabel.getStyleClass().addAll("font-size-13", "text-dark");
+                    infoLabel.setMaxWidth(Double.MAX_VALUE);
+                    javafx.scene.layout.HBox.setHgrow(infoLabel, javafx.scene.layout.Priority.ALWAYS);
+
+                    Button deleteButton = new Button("Delete");
+                    deleteButton.getStyleClass().addAll("button", "button-red");
+                    deleteButton.setOnAction(event -> {
+                        currentEvaluation.removeScoreCompetence(score);
+                        refreshScoreList();
+                    });
+
+                    hbox.getChildren().addAll(infoLabel, deleteButton);
+                    setGraphic(hbox);
                 }
             }
         });

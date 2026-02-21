@@ -1,6 +1,8 @@
 package controller;
 
 import database.EvaluationDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,12 +10,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -27,49 +32,140 @@ import model.Evaluation;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ListEvaluationsController implements Initializable {
 
     @FXML
-    private ListView<Evaluation> evaluationsListView;
+    private FlowPane evaluationsGrid;
 
     @FXML
     private Label totalEvaluationsLabel;
 
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ComboBox<String> filterComboBox;
+
+    @FXML
+    private Button sortButton;
+
+    @FXML
+    private Button clearFiltersButton;
+
+    @FXML
+    private PieChart decisionPieChart;
+
+    @FXML
+    private TitledPane pieChartPopup;
+
     private EvaluationDAO evaluationDAO;
     private DateTimeFormatter dateFormatter;
+    private ObservableList<Evaluation> allEvaluations;
+    private ObservableList<Evaluation> displayedEvaluations;
+    private boolean sortAscending = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         evaluationDAO = new EvaluationDAO();
         dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        allEvaluations = FXCollections.observableArrayList();
+        displayedEvaluations = FXCollections.observableArrayList();
 
-        setupListView();
+        setupFilterComboBox();
+        setupSearchField();
         loadEvaluations();
     }
 
-    private void setupListView() {
-        evaluationsListView.setCellFactory(param -> new ListCell<Evaluation>() {
-            @Override
-            protected void updateItem(Evaluation evaluation, boolean empty) {
-                super.updateItem(evaluation, empty);
+    private void setupFilterComboBox() {
+        filterComboBox.setItems(FXCollections.observableArrayList(
+            "All",
+            "FAVORABLE",
+            "DEFAVORABLE",
+            "A_REVOIR"
+        ));
+        filterComboBox.setValue("All");
+        filterComboBox.setOnAction(event -> applyFilters());
+    }
 
-                if (empty || evaluation == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    setGraphic(createEvaluationCard(evaluation));
-                }
-            }
+    private void setupSearchField() {
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters();
         });
+    }
+
+    private void applyFilters() {
+        String searchText = searchField.getText().toLowerCase().trim();
+        String filterValue = filterComboBox.getValue();
+
+        List<Evaluation> filtered = allEvaluations.stream()
+            .filter(e -> {
+                // Search filter
+                boolean matchesSearch = searchText.isEmpty() ||
+                    String.valueOf(e.getIdEvaluation()).contains(searchText) ||
+                    (e.getCommentaireGlobal() != null && e.getCommentaireGlobal().toLowerCase().contains(searchText)) ||
+                    String.valueOf(e.getFkEntretienId()).contains(searchText) ||
+                    String.valueOf(e.getFkRecruteurId()).contains(searchText);
+                
+                // Decision filter
+                boolean matchesFilter = "All".equals(filterValue) || 
+                    e.getDecisionPreliminaire().toString().equals(filterValue);
+                
+                return matchesSearch && matchesFilter;
+            })
+            .collect(Collectors.toList());
+
+        displayedEvaluations.setAll(filtered);
+        refreshGrid();
+        updatePieChart();
+    }
+
+    @FXML
+    private void handleSortByDecision() {
+        Comparator<Evaluation> comparator = Comparator.comparing(Evaluation::getDecisionPreliminaire);
+        if (!sortAscending) {
+            comparator = comparator.reversed();
+        }
+        
+        List<Evaluation> sorted = displayedEvaluations.stream()
+            .sorted(comparator)
+            .collect(Collectors.toList());
+        
+        displayedEvaluations.setAll(sorted);
+        sortAscending = !sortAscending;
+        refreshGrid();
+    }
+
+    @FXML
+    private void handleClearFilters() {
+        searchField.clear();
+        filterComboBox.setValue("All");
+        displayedEvaluations.setAll(allEvaluations);
+        sortAscending = true;
+        refreshGrid();
+        updatePieChart();
+    }
+
+    private void refreshGrid() {
+        evaluationsGrid.getChildren().clear();
+        for (Evaluation evaluation : displayedEvaluations) {
+            evaluationsGrid.getChildren().add(createEvaluationCard(evaluation));
+        }
+        totalEvaluationsLabel.setText("Total: " + displayedEvaluations.size() + " evaluation" + (displayedEvaluations.size() != 1 ? "s" : ""));
     }
 
     private VBox createEvaluationCard(Evaluation evaluation) {
         VBox card = new VBox(8);
-        card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2); -fx-cursor: hand;");
+        card.getStyleClass().addAll("card", getDecisionCardStyle(evaluation.getDecisionPreliminaire()));
         card.setPadding(new Insets(15));
-        card.setPrefWidth(720);
+        card.setPrefWidth(320);
+        card.setMinWidth(280);
+        card.setMaxWidth(350);
+        card.setCursor(javafx.scene.Cursor.HAND);
 
         card.setOnMouseClicked(event -> openEvaluationDetails(evaluation));
 
@@ -77,19 +173,21 @@ public class ListEvaluationsController implements Initializable {
         header.setAlignment(Pos.CENTER_LEFT);
 
         Label idLabel = new Label("Evaluation #" + evaluation.getIdEvaluation());
-        idLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        idLabel.getStyleClass().addAll("font-size-16", "font-bold", "text-dark");
 
         Circle decisionIndicator = new Circle(8);
         decisionIndicator.setFill(getDecisionColor(evaluation.getDecisionPreliminaire()));
 
         Label decisionLabel = new Label(evaluation.getDecisionPreliminaire().toString());
-        decisionLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: " + getDecisionHexColor(evaluation.getDecisionPreliminaire()) + ";");
+        decisionLabel.getStyleClass().addAll("font-size-12", "font-bold");
+        decisionLabel.setStyle("-fx-text-fill: " + getDecisionHexColor(evaluation.getDecisionPreliminaire()) + ";");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button deleteButton = new Button("Delete");
-        deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 5 10; -fx-background-radius: 4;");
+        deleteButton.getStyleClass().addAll("button", "button-red");
+        deleteButton.setStyle("-fx-font-size: 11px; -fx-padding: 5 10;");
         deleteButton.setOnAction(event -> {
             event.consume();
             handleDeleteEvaluation(evaluation);
@@ -99,26 +197,35 @@ public class ListEvaluationsController implements Initializable {
         header.getChildren().addAll(idLabel, decisionIndicator, decisionLabel, spacer, deleteButton);
 
         Label dateLabel = new Label("Created: " + evaluation.getDateCreation().format(dateFormatter));
-        dateLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
+        dateLabel.getStyleClass().addAll("font-size-12", "text-gray");
 
         Label commentLabel = new Label("Comment: " + (evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment"));
-        commentLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #444;");
+        commentLabel.getStyleClass().addAll("font-size-13", "text-dark");
         commentLabel.setWrapText(true);
+        commentLabel.setMaxHeight(40);
 
         HBox footer = new HBox(20);
         footer.setAlignment(Pos.CENTER_LEFT);
 
         Label entretienLabel = new Label("Interview ID: " + evaluation.getFkEntretienId());
-        entretienLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #888;");
+        entretienLabel.getStyleClass().addAll("font-size-11", "text-light-gray");
 
         Label recruteurLabel = new Label("Recruiter ID: " + evaluation.getFkRecruteurId());
-        recruteurLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #888;");
+        recruteurLabel.getStyleClass().addAll("font-size-11", "text-light-gray");
 
         footer.getChildren().addAll(entretienLabel, recruteurLabel);
 
         card.getChildren().addAll(header, dateLabel, commentLabel, footer);
 
         return card;
+    }
+
+    private String getDecisionCardStyle(Evaluation.DecisionPreliminaire decision) {
+        return switch (decision) {
+            case FAVORABLE -> "card-favorable";
+            case DEFAVORABLE -> "card-defavorable";
+            case A_REVOIR -> "card-arevoir";
+        };
     }
 
     private void openEvaluationDetails(Evaluation evaluation) {
@@ -186,9 +293,48 @@ public class ListEvaluationsController implements Initializable {
     }
 
     private void loadEvaluations() {
-        var evaluations = evaluationDAO.getAll();
-        evaluationsListView.getItems().setAll(evaluations);
-        totalEvaluationsLabel.setText("Total: " + evaluations.size() + " evaluation" + (evaluations.size() != 1 ? "s" : ""));
+        allEvaluations.setAll(evaluationDAO.getAll());
+        displayedEvaluations.setAll(allEvaluations);
+        refreshGrid();
+        updatePieChart();
+    }
+
+    private void updatePieChart() {
+        long favorableCount = displayedEvaluations.stream()
+            .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.FAVORABLE)
+            .count();
+        long defavorableCount = displayedEvaluations.stream()
+            .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.DEFAVORABLE)
+            .count();
+        long arevoirCount = displayedEvaluations.stream()
+            .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR)
+            .count();
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        
+        if (favorableCount > 0) {
+            pieChartData.add(new PieChart.Data("Favorable", favorableCount));
+        }
+        if (defavorableCount > 0) {
+            pieChartData.add(new PieChart.Data("Defavorable", defavorableCount));
+        }
+        if (arevoirCount > 0) {
+            pieChartData.add(new PieChart.Data("A Revoir", arevoirCount));
+        }
+
+        decisionPieChart.setData(pieChartData);
+        decisionPieChart.setTitle("Decision Distribution");
+        
+        // Apply colors to pie chart slices
+        pieChartData.forEach(data -> {
+            String color = switch (data.getName()) {
+                case "Favorable" -> "#4CAF50";
+                case "Defavorable" -> "#F44336";
+                case "A Revoir" -> "#FF9800";
+                default -> "#757575";
+            };
+            data.getNode().setStyle("-fx-pie-color: " + color + ";");
+        });
     }
 
     @FXML

@@ -90,11 +90,12 @@ public class UpdateEvaluationController implements Initializable {
                             score.getAppreciationSpecifique() != null && !score.getAppreciationSpecifique().isEmpty()
                                     ? " - " + score.getAppreciationSpecifique()
                                     : ""));
+                    infoLabel.getStyleClass().addAll("font-size-13", "text-dark");
                     infoLabel.setMaxWidth(Double.MAX_VALUE);
                     javafx.scene.layout.HBox.setHgrow(infoLabel, javafx.scene.layout.Priority.ALWAYS);
 
                     Button deleteButton = new Button("Delete");
-                    deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 4 12; -fx-background-radius: 4;");
+                    deleteButton.getStyleClass().addAll("button", "button-red");
                     deleteButton.setOnAction(event -> deleteScoreCompetence(score));
 
                     hbox.getChildren().addAll(infoLabel, deleteButton);
