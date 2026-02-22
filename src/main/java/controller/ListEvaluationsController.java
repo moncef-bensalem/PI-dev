@@ -164,7 +164,7 @@ public class ListEvaluationsController implements Initializable {
         for (Evaluation evaluation : displayedEvaluations) {
             evaluationsGrid.getChildren().add(createEvaluationCard(evaluation));
         }
-        totalEvaluationsLabel.setText("Total: " + displayedEvaluations.size() + " evaluation" + (displayedEvaluations.size() != 1 ? "s" : ""));
+        totalEvaluationsLabel.setText("Total : " + displayedEvaluations.size() + " évaluation" + (displayedEvaluations.size() != 1 ? "s" : ""));
     }
 
     private VBox createEvaluationCard(Evaluation evaluation) {
@@ -181,7 +181,7 @@ public class ListEvaluationsController implements Initializable {
         HBox header = new HBox(10);
         header.setAlignment(Pos.CENTER_LEFT);
 
-        Label idLabel = new Label("Evaluation #" + evaluation.getIdEvaluation());
+        Label idLabel = new Label("Évaluation #" + evaluation.getIdEvaluation());
         idLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #212121;");
 
         Circle decisionIndicator = new Circle(8);
@@ -193,7 +193,7 @@ public class ListEvaluationsController implements Initializable {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Supprimer");
         deleteButton.getStyleClass().addAll("button", "button-red");
         deleteButton.setStyle("-fx-font-size: 11px; -fx-padding: 5 10;");
         deleteButton.setOnAction(event -> {
@@ -204,10 +204,10 @@ public class ListEvaluationsController implements Initializable {
 
         header.getChildren().addAll(idLabel, decisionIndicator, decisionLabel, spacer, deleteButton);
 
-        Label dateLabel = new Label("Created: " + evaluation.getDateCreation().format(dateFormatter));
+        Label dateLabel = new Label("Créée le : " + evaluation.getDateCreation().format(dateFormatter));
         dateLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #424242;");
 
-        Label commentLabel = new Label("Comment: " + (evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment"));
+        Label commentLabel = new Label("Commentaire : " + (evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "Aucun commentaire"));
         commentLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #212121;");
         commentLabel.setWrapText(true);
         commentLabel.setMaxHeight(40);
@@ -215,10 +215,10 @@ public class ListEvaluationsController implements Initializable {
         HBox footer = new HBox(20);
         footer.setAlignment(Pos.CENTER_LEFT);
 
-        Label entretienLabel = new Label("Interview ID: " + evaluation.getFkEntretienId());
+        Label entretienLabel = new Label("ID Entretien : " + evaluation.getFkEntretienId());
         entretienLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #616161;");
 
-        Label recruteurLabel = new Label("Recruiter ID: " + evaluation.getFkRecruteurId());
+        Label recruteurLabel = new Label("ID Recruteur : " + evaluation.getFkRecruteurId());
         recruteurLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #616161;");
 
         footer.getChildren().addAll(entretienLabel, recruteurLabel);
@@ -245,33 +245,33 @@ public class ListEvaluationsController implements Initializable {
             controller.setEvaluation(evaluation);
 
             Stage stage = new Stage();
-            stage.setTitle("Evaluation Details - #" + evaluation.getIdEvaluation());
+            stage.setTitle("Détails de l'Évaluation - #" + evaluation.getIdEvaluation());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
             if (controller.isDeleted()) {
                 loadEvaluations();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation supprimée avec succès.");
             } else {
                 loadEvaluations();
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open evaluation details: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir les détails de l'évaluation : " + e.getMessage());
         }
     }
 
     private void handleDeleteEvaluation(Evaluation evaluation) {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete Evaluation #" + evaluation.getIdEvaluation());
-        confirmDialog.setContentText("Are you sure you want to delete this evaluation? This action cannot be undone.");
+        confirmDialog.setTitle("Confirmer la suppression");
+        confirmDialog.setHeaderText("Supprimer l'Évaluation #" + evaluation.getIdEvaluation());
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette évaluation ? Cette action ne peut pas être annulée.");
 
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 evaluationDAO.delete(evaluation);
                 loadEvaluations();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation supprimée avec succès.");
             }
         });
     }
@@ -324,20 +324,20 @@ public class ListEvaluationsController implements Initializable {
             pieChartData.add(new PieChart.Data("Favorable", favorableCount));
         }
         if (defavorableCount > 0) {
-            pieChartData.add(new PieChart.Data("Defavorable", defavorableCount));
+            pieChartData.add(new PieChart.Data("Défavorable", defavorableCount));
         }
         if (arevoirCount > 0) {
             pieChartData.add(new PieChart.Data("A Revoir", arevoirCount));
         }
 
         decisionPieChart.setData(pieChartData);
-        decisionPieChart.setTitle("Decision Distribution");
+        decisionPieChart.setTitle("Répartition des Décisions");
         
         // Apply colors to pie chart slices
         pieChartData.forEach(data -> {
             String color = switch (data.getName()) {
                 case "Favorable" -> "#4CAF50";
-                case "Defavorable" -> "#F44336";
+                case "Défavorable" -> "#F44336";
                 case "A Revoir" -> "#FF9800";
                 default -> "#757575";
             };
@@ -352,14 +352,14 @@ public class ListEvaluationsController implements Initializable {
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Create New Evaluation");
+            stage.setTitle("Créer une Nouvelle Évaluation");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
             loadEvaluations();
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open create evaluation dialog: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la boîte de dialogue de création d'évaluation : " + e.getMessage());
         }
     }
 }

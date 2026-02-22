@@ -63,15 +63,15 @@ public class DetailsScoreCompetenceController implements Initializable {
     @FXML
     private void deleteScoreCompetence() {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete Score Competence: " + scoreCompetence.getNomCritere());
-        confirmDialog.setContentText("Are you sure you want to delete this score competence? This action cannot be undone.");
+        confirmDialog.setTitle("Confirmer la suppression");
+        confirmDialog.setHeaderText("Supprimer le Score de Compétence : " + scoreCompetence.getNomCritere());
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer ce score de compétence ? Cette action ne peut pas être annulée.");
 
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 scoreCompetenceDAO.delete(scoreCompetence);
                 deleted = true;
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Score Competence deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Score de compétence supprimé avec succès.");
                 close();
             }
         });
@@ -87,7 +87,7 @@ public class DetailsScoreCompetenceController implements Initializable {
 
     private void populateFields() {
         if (scoreCompetence != null) {
-            if (idLabel != null) idLabel.setText("Competence #" + scoreCompetence.getIdDetail());
+            if (idLabel != null) idLabel.setText("Compétence #" + scoreCompetence.getIdDetail());
             if (critereLabel != null) critereLabel.setText(scoreCompetence.getNomCritere());
             if (noteLabel != null) noteLabel.setText(scoreCompetence.getNoteAttribuee() + "/20");
             if (appreciationLabel != null) appreciationLabel.setText(scoreCompetence.getAppreciationSpecifique() != null ? scoreCompetence.getAppreciationSpecifique() : "N/A");
@@ -104,7 +104,7 @@ public class DetailsScoreCompetenceController implements Initializable {
             controller.setScoreCompetence(scoreCompetence);
 
             Stage stage = new Stage();
-            stage.setTitle("Update Score Competence");
+            stage.setTitle("Mettre à jour le Score de Compétence");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -115,7 +115,7 @@ public class DetailsScoreCompetenceController implements Initializable {
                 populateFields();
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open update window: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre de mise à jour : " + e.getMessage());
         }
     }
 }

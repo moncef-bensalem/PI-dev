@@ -88,7 +88,7 @@ public class DetailsEvaluationController implements Initializable {
             controller.setEvaluation(evaluation);
 
             Stage stage = new Stage();
-            stage.setTitle("Update Evaluation #" + evaluation.getIdEvaluation());
+            stage.setTitle("Mettre à jour l'Évaluation #" + evaluation.getIdEvaluation());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -102,22 +102,22 @@ public class DetailsEvaluationController implements Initializable {
                 }
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open update dialog: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la boîte de dialogue de mise à jour : " + e.getMessage());
         }
     }
 
     @FXML
     private void deleteEvaluation() {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete Evaluation #" + evaluation.getIdEvaluation());
-        confirmDialog.setContentText("Are you sure you want to delete this evaluation? This action cannot be undone.");
+        confirmDialog.setTitle("Confirmer la suppression");
+        confirmDialog.setHeaderText("Supprimer l'Évaluation #" + evaluation.getIdEvaluation());
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette évaluation ? Cette action ne peut pas être annulée.");
 
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 evaluationDAO.delete(evaluation);
                 deleted = true;
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation supprimée avec succès.");
                 close();
             }
         });
@@ -133,10 +133,10 @@ public class DetailsEvaluationController implements Initializable {
 
     private void populateFields() {
         if (evaluation != null) {
-            if (idLabel != null) idLabel.setText("Evaluation #" + evaluation.getIdEvaluation());
+            if (idLabel != null) idLabel.setText("Évaluation #" + evaluation.getIdEvaluation());
             if (dateLabel != null) dateLabel.setText(evaluation.getDateCreation().format(dateFormatter));
             if (decisionLabel != null) decisionLabel.setText(evaluation.getDecisionPreliminaire().toString());
-            if (commentLabel != null) commentLabel.setText(evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "No comment");
+            if (commentLabel != null) commentLabel.setText(evaluation.getCommentaireGlobal() != null ? evaluation.getCommentaireGlobal() : "Aucun commentaire");
             if (entretienLabel != null) entretienLabel.setText(String.valueOf(evaluation.getFkEntretienId()));
             if (recruteurLabel != null) recruteurLabel.setText(String.valueOf(evaluation.getFkRecruteurId()));
         }
@@ -166,13 +166,13 @@ public class DetailsEvaluationController implements Initializable {
         Label critereLabel = new Label(score.getNomCritere());
         critereLabel.getStyleClass().addAll("font-size-14", "font-bold", "text-dark");
 
-        Label noteLabel = new Label("Note: " + score.getNoteAttribuee() + "/20");
+        Label noteLabel = new Label("Note : " + score.getNoteAttribuee() + "/20");
         noteLabel.getStyleClass().addAll("font-size-13", "font-bold", "text-blue");
 
         HBox.setHgrow(critereLabel, Priority.ALWAYS);
         critereLabel.setMaxWidth(Double.MAX_VALUE);
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Supprimer");
         deleteButton.getStyleClass().addAll("button", "button-red");
         deleteButton.setOnAction(event -> {
             event.consume();
@@ -181,7 +181,7 @@ public class DetailsEvaluationController implements Initializable {
 
         header.getChildren().addAll(critereLabel, noteLabel, deleteButton);
 
-        Label appreciationLabel = new Label("Appreciation: " + (score.getAppreciationSpecifique() != null ? score.getAppreciationSpecifique() : "N/A"));
+        Label appreciationLabel = new Label("Appréciation : " + (score.getAppreciationSpecifique() != null ? score.getAppreciationSpecifique() : "N/A"));
         appreciationLabel.getStyleClass().addAll("font-size-12", "text-gray");
         appreciationLabel.setWrapText(true);
 
@@ -198,7 +198,7 @@ public class DetailsEvaluationController implements Initializable {
             controller.setScoreCompetence(score);
 
             Stage stage = new Stage();
-            stage.setTitle("Score Competence Details");
+            stage.setTitle("Détails du Score de Compétence");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -207,21 +207,21 @@ public class DetailsEvaluationController implements Initializable {
                 loadScoreCompetences();
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open Score Competence details: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir les détails du score de compétence : " + e.getMessage());
         }
     }
 
     private void deleteScoreCompetence(ScoreCompetence score) {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete Score Competence: " + score.getNomCritere());
-        confirmDialog.setContentText("Are you sure you want to delete this score competence? This action cannot be undone.");
+        confirmDialog.setTitle("Confirmer la suppression");
+        confirmDialog.setHeaderText("Supprimer le Score de Compétence : " + score.getNomCritere());
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer ce score de compétence ? Cette action ne peut pas être annulée.");
 
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 scoreCompetenceDAO.delete(score);
                 loadScoreCompetences();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Score Competence deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Score de compétence supprimé avec succès.");
             }
         });
     }

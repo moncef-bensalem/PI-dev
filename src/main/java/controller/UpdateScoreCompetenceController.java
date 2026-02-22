@@ -62,7 +62,7 @@ public class UpdateScoreCompetenceController implements Initializable {
         scoreCompetenceDAO.update(scoreCompetence);
         saved = true;
 
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Score Competence updated successfully.");
+        showAlert(Alert.AlertType.INFORMATION, "Succès", "Score de compétence mis à jour avec succès.");
         closeWindow();
     }
 
@@ -77,7 +77,7 @@ public class UpdateScoreCompetenceController implements Initializable {
 
         String nomCritere = nomCritereField.getText().trim();
         if (nomCritere.isEmpty()) {
-            nomCritereErrorLabel.setText("Criteria name is required");
+            nomCritereErrorLabel.setText("Le nom du critère est obligatoire");
             isValid = false;
         } else {
             nomCritereErrorLabel.setText("");
@@ -85,19 +85,19 @@ public class UpdateScoreCompetenceController implements Initializable {
 
         String noteText = noteAttribueeField.getText().trim();
         if (noteText.isEmpty()) {
-            noteErrorLabel.setText("Score is required");
+            noteErrorLabel.setText("La note est obligatoire");
             isValid = false;
         } else {
             try {
                 float note = Float.parseFloat(noteText);
                 if (note < 0 || note > 20) {
-                    noteErrorLabel.setText("Score must be between 0 and 20");
+                    noteErrorLabel.setText("La note doit être comprise entre 0 et 20");
                     isValid = false;
                 } else {
                     noteErrorLabel.setText("");
                 }
             } catch (NumberFormatException e) {
-                noteErrorLabel.setText("Score must be a valid number");
+                noteErrorLabel.setText("La note doit être un nombre valide");
                 isValid = false;
             }
         }

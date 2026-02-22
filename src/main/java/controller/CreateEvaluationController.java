@@ -92,7 +92,7 @@ public class CreateEvaluationController implements Initializable {
                     infoLabel.setMaxWidth(Double.MAX_VALUE);
                     javafx.scene.layout.HBox.setHgrow(infoLabel, javafx.scene.layout.Priority.ALWAYS);
 
-                    Button deleteButton = new Button("Delete");
+                    Button deleteButton = new Button("Supprimer");
                     deleteButton.getStyleClass().addAll("button", "button-red");
                     deleteButton.setOnAction(event -> {
                         currentEvaluation.removeScoreCompetence(score);
@@ -115,7 +115,7 @@ public class CreateEvaluationController implements Initializable {
             CreateScoreCompetenceController controller = loader.getController();
 
             Stage stage = new Stage();
-            stage.setTitle("Add Competence Score");
+            stage.setTitle("Ajouter un Score de Compétence");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -126,7 +126,7 @@ public class CreateEvaluationController implements Initializable {
                 refreshScoreList();
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open add score dialog: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la boîte de dialogue d'ajout de score : " + e.getMessage());
         }
     }
 
@@ -143,7 +143,7 @@ public class CreateEvaluationController implements Initializable {
 
         evaluationDAO.add(currentEvaluation);
 
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation created successfully!");
+        showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation créée avec succès !");
         closeWindow();
     }
 
@@ -157,14 +157,14 @@ public class CreateEvaluationController implements Initializable {
 
         String commentaire = commentaireGlobalField.getText().trim();
         if (commentaire.isEmpty()) {
-            commentaireErrorLabel.setText("Global comment is required");
+            commentaireErrorLabel.setText("Le commentaire global est obligatoire");
             isValid = false;
         } else {
             commentaireErrorLabel.setText("");
         }
 
         if (decisionPreliminaireCombo.getValue() == null) {
-            decisionErrorLabel.setText("Please select a decision");
+            decisionErrorLabel.setText("Veuillez sélectionner une décision");
             isValid = false;
         } else {
             decisionErrorLabel.setText("");
@@ -172,28 +172,28 @@ public class CreateEvaluationController implements Initializable {
 
         String entretienId = fkEntretienIdField.getText().trim();
         if (entretienId.isEmpty()) {
-            entretienErrorLabel.setText("Interview ID is required");
+            entretienErrorLabel.setText("L'ID de l'entretien est obligatoire");
             isValid = false;
         } else {
             try {
                 Integer.parseInt(entretienId);
                 entretienErrorLabel.setText("");
             } catch (NumberFormatException e) {
-                entretienErrorLabel.setText("Interview ID must be a number");
+                entretienErrorLabel.setText("L'ID de l'entretien doit être un nombre");
                 isValid = false;
             }
         }
 
         String recruteurId = fkRecruteurIdField.getText().trim();
         if (recruteurId.isEmpty()) {
-            recruteurErrorLabel.setText("Recruiter ID is required");
+            recruteurErrorLabel.setText("L'ID du recruteur est obligatoire");
             isValid = false;
         } else {
             try {
                 Integer.parseInt(recruteurId);
                 recruteurErrorLabel.setText("");
             } catch (NumberFormatException e) {
-                recruteurErrorLabel.setText("Recruiter ID must be a number");
+                recruteurErrorLabel.setText("L'ID du recruteur doit être un nombre");
                 isValid = false;
             }
         }
@@ -208,7 +208,7 @@ public class CreateEvaluationController implements Initializable {
 
     private void updateScoreCount() {
         int count = currentEvaluation.getScoreCompetences().size();
-        scoreCountLabel.setText(count + " competence score(s) added");
+        scoreCountLabel.setText(count + " score(s) de compétence ajouté(s)");
     }
 
     private void closeWindow() {

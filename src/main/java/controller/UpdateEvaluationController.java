@@ -94,7 +94,7 @@ public class UpdateEvaluationController implements Initializable {
                     infoLabel.setMaxWidth(Double.MAX_VALUE);
                     javafx.scene.layout.HBox.setHgrow(infoLabel, javafx.scene.layout.Priority.ALWAYS);
 
-                    Button deleteButton = new Button("Delete");
+                    Button deleteButton = new Button("Supprimer");
                     deleteButton.getStyleClass().addAll("button", "button-red");
                     deleteButton.setOnAction(event -> deleteScoreCompetence(score));
 
@@ -120,7 +120,7 @@ public class UpdateEvaluationController implements Initializable {
 
     private void updateScoreCount() {
         int count = currentEvaluation.getScoreCompetences().size();
-        scoreCountLabel.setText(count + " competence score(s)");
+        scoreCountLabel.setText(count + " score(s) de compétence");
     }
 
     @FXML
@@ -132,7 +132,7 @@ public class UpdateEvaluationController implements Initializable {
             CreateScoreCompetenceController controller = loader.getController();
 
             Stage stage = new Stage();
-            stage.setTitle("Add Competence Score");
+            stage.setTitle("Ajouter un Score de Compétence");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -143,21 +143,21 @@ public class UpdateEvaluationController implements Initializable {
                 loadScoreCompetences();
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Could not open add score dialog: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la boîte de dialogue d'ajout de score : " + e.getMessage());
         }
     }
 
     private void deleteScoreCompetence(ScoreCompetence score) {
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete Score Competence: " + score.getNomCritere());
-        confirmDialog.setContentText("Are you sure you want to delete this score competence? This action cannot be undone.");
+        confirmDialog.setTitle("Confirmer la suppression");
+        confirmDialog.setHeaderText("Supprimer le Score de Compétence : " + score.getNomCritere());
+        confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer ce score de compétence ? Cette action ne peut pas être annulée.");
 
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 scoreCompetenceDAO.delete(score);
                 loadScoreCompetences();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Score Competence deleted successfully.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Score de compétence supprimé avec succès.");
             }
         });
     }
@@ -175,7 +175,7 @@ public class UpdateEvaluationController implements Initializable {
         evaluationDAO.update(currentEvaluation);
 
         saved = true;
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Evaluation updated successfully!");
+        showAlert(Alert.AlertType.INFORMATION, "Succès", "Évaluation mise à jour avec succès !");
         closeWindow();
     }
 
@@ -190,14 +190,14 @@ public class UpdateEvaluationController implements Initializable {
 
         String commentaire = commentaireGlobalField.getText().trim();
         if (commentaire.isEmpty()) {
-            commentaireErrorLabel.setText("Global comment is required");
+            commentaireErrorLabel.setText("Le commentaire global est obligatoire");
             isValid = false;
         } else {
             commentaireErrorLabel.setText("");
         }
 
         if (decisionPreliminaireCombo.getValue() == null) {
-            decisionErrorLabel.setText("Please select a decision");
+            decisionErrorLabel.setText("Veuillez sélectionner une décision");
             isValid = false;
         } else {
             decisionErrorLabel.setText("");
