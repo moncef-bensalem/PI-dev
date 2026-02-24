@@ -468,7 +468,6 @@ public class DashboardController implements Initializable {
             
             // Check if we need a new page
             if (yPos < 100) {
-                contentStream.endText();
                 contentStream.close();
                 
                 // Add new page
@@ -507,7 +506,6 @@ public class DashboardController implements Initializable {
             
             // Check if we need a new page
             if (yPos < 100) {
-                contentStream.endText();
                 contentStream.close();
                 
                 // Add new page
@@ -546,7 +544,6 @@ public class DashboardController implements Initializable {
             
             // Check if we need a new page
             if (yPos < 100) {
-                contentStream.endText();
                 contentStream.close();
                 
                 // Add new page
@@ -566,7 +563,6 @@ public class DashboardController implements Initializable {
             }
         }
         
-        contentStream.endText();
         contentStream.close();
     }
     

@@ -38,6 +38,9 @@ public class LoginController implements Initializable {
     private Button cancelButton;
 
     @FXML
+    private Button signupButton;
+
+    @FXML
     private StackPane logoContainer;
 
     @FXML
@@ -244,6 +247,37 @@ public class LoginController implements Initializable {
     @FXML
     protected void onCancelClick(ActionEvent event) {
         closeWindow();
+    }
+
+    @FXML
+    protected void onSignupClick(ActionEvent event) {
+        switchToRegistrationScreen();
+    }
+
+    private void switchToRegistrationScreen() {
+        try {
+            // Load registration FXML
+            FXMLLoader loader = new FXMLLoader();
+            java.net.URL resourceUrl = getClass().getClassLoader().getResource("fxml/registration.fxml");
+            if (resourceUrl == null) {
+                throw new Exception("Registration FXML file not found");
+            }
+
+            loader.setLocation(resourceUrl);
+            Parent registrationRoot = loader.load();
+
+            // Get current stage
+            Stage currentStage = (Stage) signupButton.getScene().getWindow();
+            Scene registrationScene = new Scene(registrationRoot, 520, 720);
+            currentStage.setScene(registrationScene);
+            currentStage.setTitle("NEXUS - Registration");
+            currentStage.show();
+
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                     "Failed to navigate to registration screen: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void closeWindow() {

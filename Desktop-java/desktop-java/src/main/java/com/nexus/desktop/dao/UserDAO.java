@@ -389,11 +389,23 @@ public class UserDAO implements GenericDAO<User, Integer> {
      */
     private boolean checkPassword(String plainPassword, String hashedPassword) {
         // Check if the password is in bcrypt format
-        if (hashedPassword.startsWith("$2y$") || hashedPassword.startsWith("$2a$") || hashedPassword.startsWith("$2b$")) {
-            // Use jBCrypt to verify the password
-            return org.mindrot.jbcrypt.BCrypt.checkpw(plainPassword, hashedPassword);
+        if (hashedPassword != null && 
+            (hashedPassword.startsWith("$2y$") || hashedPassword.startsWith("$2a$") || 
+             hashedPassword.startsWith("$2b$") || hashedPassword.startsWith("$2x$"))) {
+            try {
+                // Use jBCrypt to verify the password
+                return org.mindrot.jbcrypt.BCrypt.checkpw(plainPassword, hashedPassword);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Invalid bcrypt hash format: " + e.getMessage());
+                // Log the specific hash that caused the issue
+                System.err.println("Problematic hash: " + hashedPassword);
+                return false; // Invalid hash, authentication fails
+            }
         }
         // For backward compatibility with plain text passwords
+        if (hashedPassword == null) {
+            return false; // No password set
+        }
         return plainPassword.equals(hashedPassword);
     }
 }

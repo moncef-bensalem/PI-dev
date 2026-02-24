@@ -3,12 +3,14 @@ C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\u
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\controller\UserCardController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\service\TokenService.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\util\DatabaseManager.java
+C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\controller\RegistrationController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\model\Admin.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\controller\PlanificationListController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\controller\UserFormController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\LoginController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\model\Session.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\util\DashboardRouter.java
+C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\service\HttpClientService.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\model\User.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\controller\PlanificationUpdateController.java
 C:\laragon\www\NEXUS\Desktop-java\desktop-java\src\main\java\com\nexus\desktop\dao\GenericDAO.java

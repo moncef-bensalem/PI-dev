@@ -38,6 +38,7 @@
                     <VBox spacing="12" alignment="CENTER">
                         <Button fx:id="loginButton" text="Se connecter" styleClass="btn-action-activate" onAction="#onLoginClick" maxWidth="Infinity" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 14 32;"/>
                         <Button fx:id="cancelButton" text="Annuler" styleClass="btn-action-deactivate" onAction="#onCancelClick" style="-fx-font-size: 14px; -fx-padding: 10 24;"/>
+                        <Button fx:id="signupButton" text="S'inscrire (Candidat uniquement)" styleClass="btn-action-secondary" onAction="#onSignupClick" maxWidth="Infinity" style="-fx-font-size: 12px; -fx-padding: 8 16; -fx-text-fill: #0072FF;"/>
                     </VBox>
                 </VBox>
             </VBox>
