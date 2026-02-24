@@ -114,14 +114,7 @@ public class LoginController implements Initializable {
     /**
      * Validate email format
      */
-    private boolean validateEmailFormat(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            return false;
-        }
-        
-        // Check email format using regex
-        return email.trim().matches("^[A-Za-z0-9+_.-]+@(.+)$");
-    }
+  
     
     /**
      * Validate password format
