@@ -17,13 +17,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -32,7 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.Evaluation;
 
 import java.io.IOException;
@@ -71,16 +68,20 @@ public class ListEvaluationsController implements Initializable {
     private TitledPane pieChartPopup;
 
     @FXML
-    private TitledPane reviewDeadlinePane;
+    private VBox calendarContainer;
 
     @FXML
-    private DatePicker reviewDeadlinePicker;
+    private Label calendarMonthLabel;
+
+    @FXML
+    private GridPane calendarGrid;
 
     private EvaluationDAO evaluationDAO;
     private DateTimeFormatter dateFormatter;
     private ObservableList<Evaluation> allEvaluations;
     private ObservableList<Evaluation> displayedEvaluations;
     private boolean sortAscending = true;
+    private LocalDate currentCalendarMonth;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -88,10 +89,10 @@ public class ListEvaluationsController implements Initializable {
         dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         allEvaluations = FXCollections.observableArrayList();
         displayedEvaluations = FXCollections.observableArrayList();
+        currentCalendarMonth = LocalDate.now().withDayOfMonth(1);
 
         setupFilterComboBox();
         setupSearchField();
-        setupReviewDeadlinePane();
         loadEvaluations();
     }
 
@@ -105,78 +106,7 @@ public class ListEvaluationsController implements Initializable {
         filterComboBox.setValue("Tous");
         filterComboBox.setOnAction(event -> {
             applyFilters();
-            updateReviewDeadlineVisibility();
         });
-    }
-
-    private void setupReviewDeadlinePane() {
-        if (reviewDeadlinePane != null) {
-            reviewDeadlinePane.setVisible(false);
-            reviewDeadlinePane.setManaged(false);
-        }
-
-        if (reviewDeadlinePicker != null) {
-            reviewDeadlinePicker.setDayCellFactory(createReviewDeadlineCellFactory());
-            reviewDeadlinePicker.setOnAction(event -> {
-                LocalDate selectedDate = reviewDeadlinePicker.getValue();
-                if (selectedDate != null) {
-                    long count = allEvaluations.stream()
-                        .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR)
-                        .filter(e -> selectedDate.equals(e.getReviewDeadline()))
-                        .count();
-
-                    if (count > 0) {
-                        showAlert(
-                            Alert.AlertType.INFORMATION,
-                            "Évaluations à revoir",
-                            "Il y a " + count + " évaluation(s) A_REVOIR avec une deadline le "
-                                + selectedDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                        );
-                    } else {
-                        showAlert(
-                            Alert.AlertType.INFORMATION,
-                            "Aucune échéance",
-                            "Aucune évaluation A_REVOIR n'a de deadline le "
-                                + selectedDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                        );
-                    }
-                }
-            });
-        }
-    }
-
-    private Callback<DatePicker, DateCell> createReviewDeadlineCellFactory() {
-        return datePicker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-
-                if (!empty && date != null && hasReviewDeadlineOn(date)) {
-                    setStyle("-fx-background-color: #FFE0B2; -fx-border-color: #FB8C00;");
-                    setTooltip(new Tooltip("Au moins une évaluation A_REVOIR à revoir ce jour"));
-                }
-            }
-        };
-    }
-
-    private boolean hasReviewDeadlineOn(LocalDate date) {
-        if (date == null) {
-            return false;
-        }
-
-        return allEvaluations.stream()
-            .anyMatch(e ->
-                e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR
-                    && date.equals(e.getReviewDeadline())
-            );
-    }
-
-    private void updateReviewDeadlineVisibility() {
-        if (reviewDeadlinePane != null && filterComboBox != null) {
-            boolean show = "à revoir".equals(filterComboBox.getValue());
-            reviewDeadlinePane.setVisible(show);
-            reviewDeadlinePane.setManaged(show);
-        }
     }
 
     private boolean matchesDecisionFilter(String filterValue, Evaluation.DecisionPreliminaire decision) {
@@ -218,6 +148,7 @@ public class ListEvaluationsController implements Initializable {
         displayedEvaluations.setAll(filtered);
         refreshGrid();
         updatePieChart();
+        renderCalendar();
     }
 
     @FXML
@@ -242,9 +173,9 @@ public class ListEvaluationsController implements Initializable {
         filterComboBox.setValue("Tous");
         displayedEvaluations.setAll(allEvaluations);
         sortAscending = true;
-        updateReviewDeadlineVisibility();
         refreshGrid();
         updatePieChart();
+        renderCalendar();
     }
 
     private void refreshGrid() {
@@ -393,10 +324,84 @@ public class ListEvaluationsController implements Initializable {
         displayedEvaluations.setAll(allEvaluations);
         refreshGrid();
         updatePieChart();
-        if (reviewDeadlinePicker != null) {
-            // Force refresh of the calendar cell styles
-            reviewDeadlinePicker.setValue(reviewDeadlinePicker.getValue());
+        renderCalendar();
+    }
+
+    private void renderCalendar() {
+        if (calendarGrid == null || calendarMonthLabel == null) {
+            return;
         }
+
+        calendarGrid.getChildren().clear();
+
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        calendarMonthLabel.setText(currentCalendarMonth.format(monthFormatter));
+
+        String[] dayNames = {"L", "M", "M", "J", "V", "S", "D"};
+        for (int col = 0; col < 7; col++) {
+            Label header = new Label(dayNames[col]);
+            header.getStyleClass().add("calendar-day-header");
+            GridPane.setHgrow(header, Priority.ALWAYS);
+            calendarGrid.add(header, col, 0);
+        }
+
+        LocalDate firstOfMonth = currentCalendarMonth;
+        int lengthOfMonth = firstOfMonth.lengthOfMonth();
+        int firstDayCol = firstOfMonth.getDayOfWeek().getValue() % 7; // Lundi = 1 -> 1, Dimanche = 7 -> 0
+
+        int row = 1;
+        int col = firstDayCol;
+
+        for (int day = 1; day <= lengthOfMonth; day++) {
+            LocalDate date = firstOfMonth.withDayOfMonth(day);
+
+            VBox cell = new VBox(2);
+            cell.getStyleClass().add("calendar-cell");
+            cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+            Label dayLabel = new Label(String.valueOf(day));
+            dayLabel.getStyleClass().add("calendar-day-number");
+            cell.getChildren().add(dayLabel);
+
+            List<Evaluation> evalsForDay = allEvaluations.stream()
+                .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR)
+                .filter(e -> date.equals(e.getReviewDeadline()))
+                .collect(Collectors.toList());
+
+            if (!evalsForDay.isEmpty()) {
+                String ids = evalsForDay.stream()
+                    .map(e -> String.valueOf(e.getFkEntretienId()))
+                    .distinct()
+                    .collect(Collectors.joining(", "));
+
+                Label idsLabel = new Label(ids);
+                idsLabel.getStyleClass().add("calendar-eval-label");
+                cell.getChildren().add(idsLabel);
+                cell.getStyleClass().add("calendar-cell-has-eval");
+            }
+
+            GridPane.setHgrow(cell, Priority.ALWAYS);
+            GridPane.setVgrow(cell, Priority.ALWAYS);
+            calendarGrid.add(cell, col, row);
+
+            col++;
+            if (col > 6) {
+                col = 0;
+                row++;
+            }
+        }
+    }
+
+    @FXML
+    private void handlePrevMonth() {
+        currentCalendarMonth = currentCalendarMonth.minusMonths(1);
+        renderCalendar();
+    }
+
+    @FXML
+    private void handleNextMonth() {
+        currentCalendarMonth = currentCalendarMonth.plusMonths(1);
+        renderCalendar();
     }
 
     private void updatePieChart() {

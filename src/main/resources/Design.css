@@ -225,6 +225,44 @@
     -fx-background-color: transparent;
 }
 
+.calendar-container {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 12px;
+}
+
+.calendar-day-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #757575;
+}
+
+.calendar-cell {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+    -fx-padding: 4px;
+}
+
+.calendar-cell-has-eval {
+    -fx-background-color: #FFF3E0;
+    -fx-border-color: #FF9800;
+}
+
+.calendar-day-number {
+    -fx-font-size: 11px;
+    -fx-text-fill: #424242;
+}
+
+.calendar-eval-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #BF360C;
+    -fx-wrap-text: true;
+}
+
 .card {
     -fx-background-color: white;
     -fx-border-color: #BDBDBD;
@@ -303,6 +341,20 @@
     -fx-background-radius: 0 0 8px 8px;
     -fx-border-radius: 0 0 8px 8px;
     -fx-padding: 10px;
+}
+
+/* Panneau analytique et calendrier : style plat */
+.analytics-pane,
+.calendar-pane {
+    -fx-effect: null;
+}
+
+.calendar-pane > .title {
+    -fx-background-color: #FFB74D;
+}
+
+.calendar-pane > .content {
+    -fx-background-color: #FFFFFF;
 }
 
 .detail-pane {
