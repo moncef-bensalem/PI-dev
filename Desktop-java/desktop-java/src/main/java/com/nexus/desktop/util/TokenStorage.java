@@ -69,10 +69,5 @@ public final class TokenStorage {
         }
     }
 
-    /**
-     * Check if a token is stored
-     */
-    public static boolean hasToken() {
-        return Files.exists(getTokenPath());
-    }
+    
 }
