@@ -388,24 +388,51 @@ public class UserDAO implements GenericDAO<User, Integer> {
      * Password checking using BCrypt (compatible with Symfony/PHP)
      */
     private boolean checkPassword(String plainPassword, String hashedPassword) {
+        // Debug logging
+        System.out.println("Checking password for hash: " + (hashedPassword != null ? hashedPassword.substring(0, Math.min(20, hashedPassword.length())) + "..." : "null"));
+        System.out.println("Plain password length: " + (plainPassword != null ? plainPassword.length() : "null"));
+        
         // Check if the password is in bcrypt format
         if (hashedPassword != null && 
             (hashedPassword.startsWith("$2y$") || hashedPassword.startsWith("$2a$") || 
              hashedPassword.startsWith("$2b$") || hashedPassword.startsWith("$2x$"))) {
             try {
-                // Use jBCrypt to verify the password
-                return org.mindrot.jbcrypt.BCrypt.checkpw(plainPassword, hashedPassword);
+                // Additional debugging
+                System.out.println("Attempting bcrypt verification...");
+                
+                // Handle $2y$ prefix (PHP specific) by converting to $2a$ for jBCrypt compatibility
+                String compatibleHash = hashedPassword;
+                if (hashedPassword.startsWith("$2y$")) {
+                    compatibleHash = "$2a$" + hashedPassword.substring(4);
+                    System.out.println("Converted $2y$ to $2a$ for compatibility");
+                }
+                
+                // Try primary verification
+                boolean result = org.mindrot.jbcrypt.BCrypt.checkpw(plainPassword, compatibleHash);
+                System.out.println("Primary BCrypt verification result: " + result);
+                
+                // If primary fails, try with original hash as fallback
+                if (!result && !compatibleHash.equals(hashedPassword)) {
+                    System.out.println("Trying fallback verification with original hash");
+                    result = org.mindrot.jbcrypt.BCrypt.checkpw(plainPassword, hashedPassword);
+                    System.out.println("Fallback BCrypt verification result: " + result);
+                }
+                
+                return result;
             } catch (IllegalArgumentException e) {
                 System.err.println("Invalid bcrypt hash format: " + e.getMessage());
                 // Log the specific hash that caused the issue
                 System.err.println("Problematic hash: " + hashedPassword);
+                System.err.println("Hash length: " + (hashedPassword != null ? hashedPassword.length() : "null"));
                 return false; // Invalid hash, authentication fails
             }
         }
         // For backward compatibility with plain text passwords
         if (hashedPassword == null) {
+            System.out.println("Hashed password is null");
             return false; // No password set
         }
+        System.out.println("Falling back to plain text comparison");
         return plainPassword.equals(hashedPassword);
     }
 }
