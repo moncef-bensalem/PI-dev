@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class Evaluation {
     private DecisionPreliminaire decisionPreliminaire;
     private int fkEntretienId;
     private int fkRecruteurId;
+    private LocalDate reviewDeadline;
     private List<ScoreCompetence> scoreCompetences;
 
     public enum DecisionPreliminaire {
@@ -80,6 +82,14 @@ public class Evaluation {
         this.fkRecruteurId = fkRecruteurId;
     }
 
+    public LocalDate getReviewDeadline() {
+        return reviewDeadline;
+    }
+
+    public void setReviewDeadline(LocalDate reviewDeadline) {
+        this.reviewDeadline = reviewDeadline;
+    }
+
     public List<ScoreCompetence> getScoreCompetences() {
         return scoreCompetences;
     }
@@ -101,6 +111,7 @@ public class Evaluation {
         return "Evaluation{" +
                 "idEvaluation=" + idEvaluation +
                 ", dateCreation=" + dateCreation +
+                ", reviewDeadline=" + reviewDeadline +
                 ", decisionPreliminaire=" + decisionPreliminaire +
                 ", fkEntretienId=" + fkEntretienId +
                 ", fkRecruteurId=" + fkRecruteurId +

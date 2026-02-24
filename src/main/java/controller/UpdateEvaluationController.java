@@ -2,6 +2,7 @@ package controller;
 
 import database.EvaluationDAO;
 import database.ScoreCompetenceDAO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Evaluation;
@@ -32,6 +34,13 @@ public class UpdateEvaluationController implements Initializable {
     private Label decisionErrorLabel;
 
     @FXML
+    private VBox reviewDeadlineContainer;
+    @FXML
+    private DatePicker reviewDeadlinePicker;
+    @FXML
+    private Label reviewDeadlineErrorLabel;
+
+    @FXML
     private ListView<ScoreCompetence> scoreCompetencesListView;
     @FXML
     private Label scoreCountLabel;
@@ -52,6 +61,22 @@ public class UpdateEvaluationController implements Initializable {
                 Evaluation.DecisionPreliminaire.A_REVOIR
         ));
 
+        decisionPreliminaireCombo.valueProperty().addListener((obs, oldValue, newValue) -> {
+            boolean isARevoir = newValue == Evaluation.DecisionPreliminaire.A_REVOIR;
+            if (reviewDeadlineContainer != null) {
+                reviewDeadlineContainer.setVisible(isARevoir);
+                reviewDeadlineContainer.setManaged(isARevoir);
+            }
+            if (isARevoir && reviewDeadlinePicker != null) {
+                reviewDeadlineErrorLabel.setText("");
+                Platform.runLater(() -> reviewDeadlinePicker.show());
+            }
+            if (!isARevoir && reviewDeadlinePicker != null) {
+                reviewDeadlinePicker.setValue(null);
+                reviewDeadlineErrorLabel.setText("");
+            }
+        });
+
         setupScoreCompetencesListView();
     }
 
@@ -69,6 +94,23 @@ public class UpdateEvaluationController implements Initializable {
         if (currentEvaluation != null) {
             commentaireGlobalField.setText(currentEvaluation.getCommentaireGlobal());
             decisionPreliminaireCombo.setValue(currentEvaluation.getDecisionPreliminaire());
+            if (currentEvaluation.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR) {
+                if (reviewDeadlineContainer != null) {
+                    reviewDeadlineContainer.setVisible(true);
+                    reviewDeadlineContainer.setManaged(true);
+                }
+                if (reviewDeadlinePicker != null) {
+                    reviewDeadlinePicker.setValue(currentEvaluation.getReviewDeadline());
+                }
+            } else {
+                if (reviewDeadlineContainer != null) {
+                    reviewDeadlineContainer.setVisible(false);
+                    reviewDeadlineContainer.setManaged(false);
+                }
+                if (reviewDeadlinePicker != null) {
+                    reviewDeadlinePicker.setValue(null);
+                }
+            }
         }
     }
 
@@ -171,6 +213,11 @@ public class UpdateEvaluationController implements Initializable {
         currentEvaluation.setDateCreation(LocalDateTime.now());
         currentEvaluation.setCommentaireGlobal(commentaireGlobalField.getText().trim());
         currentEvaluation.setDecisionPreliminaire(decisionPreliminaireCombo.getValue());
+        if (decisionPreliminaireCombo.getValue() == Evaluation.DecisionPreliminaire.A_REVOIR) {
+            currentEvaluation.setReviewDeadline(reviewDeadlinePicker.getValue());
+        } else {
+            currentEvaluation.setReviewDeadline(null);
+        }
 
         evaluationDAO.update(currentEvaluation);
 
@@ -201,6 +248,17 @@ public class UpdateEvaluationController implements Initializable {
             isValid = false;
         } else {
             decisionErrorLabel.setText("");
+        }
+
+        if (decisionPreliminaireCombo.getValue() == Evaluation.DecisionPreliminaire.A_REVOIR) {
+            if (reviewDeadlinePicker.getValue() == null) {
+                reviewDeadlineErrorLabel.setText("Veuillez choisir une date limite pour A_REVOIR");
+                isValid = false;
+            } else {
+                reviewDeadlineErrorLabel.setText("");
+            }
+        } else {
+            reviewDeadlineErrorLabel.setText("");
         }
 
         return isValid;

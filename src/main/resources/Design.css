@@ -244,7 +244,6 @@
     -fx-border-color: #90CAF9;
 }
 
-/* Decision-specific card styles with colored backgrounds */
 .card-favorable {
     -fx-background-color: #E8F5E9;
     -fx-border-color: #4CAF50;
@@ -364,32 +363,26 @@
     -fx-font-weight: bold;
 }
 
-/* High contrast for list view cells */
 .list-view .list-cell {
     -fx-text-fill: #212121;
 }
 
-/* High contrast for combo box */
 .combo-box .list-cell {
     -fx-text-fill: #212121;
 }
 
-/* Table view high contrast */
 .table-view .cell {
     -fx-text-fill: #212121;
 }
 
-/* Titled pane content high contrast */
 .titled-pane .content .label {
     -fx-text-fill: #212121;
 }
 
-/* Detail pane high contrast */
 .detail-pane .label {
     -fx-text-fill: #212121;
 }
 
-/* Scroll pane content high contrast */
 .scroll-pane .label {
     -fx-text-fill: #212121;
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import database.EvaluationDAO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Evaluation;
@@ -35,6 +38,13 @@ public class CreateEvaluationController implements Initializable {
     private ComboBox<Evaluation.DecisionPreliminaire> decisionPreliminaireCombo;
     @FXML
     private Label decisionErrorLabel;
+
+    @FXML
+    private VBox reviewDeadlineContainer;
+    @FXML
+    private DatePicker reviewDeadlinePicker;
+    @FXML
+    private Label reviewDeadlineErrorLabel;
 
     @FXML
     private TextField fkEntretienIdField;
@@ -65,6 +75,22 @@ public class CreateEvaluationController implements Initializable {
                 Evaluation.DecisionPreliminaire.DEFAVORABLE,
                 Evaluation.DecisionPreliminaire.A_REVOIR
         ));
+
+        decisionPreliminaireCombo.valueProperty().addListener((obs, oldValue, newValue) -> {
+            boolean isARevoir = newValue == Evaluation.DecisionPreliminaire.A_REVOIR;
+            if (reviewDeadlineContainer != null) {
+                reviewDeadlineContainer.setVisible(isARevoir);
+                reviewDeadlineContainer.setManaged(isARevoir);
+            }
+            if (isARevoir && reviewDeadlinePicker != null) {
+                reviewDeadlineErrorLabel.setText("");
+                Platform.runLater(() -> reviewDeadlinePicker.show());
+            }
+            if (!isARevoir && reviewDeadlinePicker != null) {
+                reviewDeadlinePicker.setValue(null);
+                reviewDeadlineErrorLabel.setText("");
+            }
+        });
 
         setupScoreCompetencesListView();
         updateScoreCount();
@@ -140,6 +166,11 @@ public class CreateEvaluationController implements Initializable {
         currentEvaluation.setDecisionPreliminaire(decisionPreliminaireCombo.getValue());
         currentEvaluation.setFkEntretienId(Integer.parseInt(fkEntretienIdField.getText().trim()));
         currentEvaluation.setFkRecruteurId(Integer.parseInt(fkRecruteurIdField.getText().trim()));
+        if (decisionPreliminaireCombo.getValue() == Evaluation.DecisionPreliminaire.A_REVOIR) {
+            currentEvaluation.setReviewDeadline(reviewDeadlinePicker.getValue());
+        } else {
+            currentEvaluation.setReviewDeadline(null);
+        }
 
         evaluationDAO.add(currentEvaluation);
 
@@ -168,6 +199,17 @@ public class CreateEvaluationController implements Initializable {
             isValid = false;
         } else {
             decisionErrorLabel.setText("");
+        }
+
+        if (decisionPreliminaireCombo.getValue() == Evaluation.DecisionPreliminaire.A_REVOIR) {
+            if (reviewDeadlinePicker.getValue() == null) {
+                reviewDeadlineErrorLabel.setText("Veuillez choisir une date limite pour A_REVOIR");
+                isValid = false;
+            } else {
+                reviewDeadlineErrorLabel.setText("");
+            }
+        } else {
+            reviewDeadlineErrorLabel.setText("");
         }
 
         String entretienId = fkEntretienIdField.getText().trim();

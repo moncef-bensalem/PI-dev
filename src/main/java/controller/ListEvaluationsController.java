@@ -1,6 +1,7 @@
 package controller;
 
 import database.EvaluationDAO;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -15,9 +17,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -27,10 +32,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Evaluation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
@@ -63,6 +70,12 @@ public class ListEvaluationsController implements Initializable {
     @FXML
     private TitledPane pieChartPopup;
 
+    @FXML
+    private TitledPane reviewDeadlinePane;
+
+    @FXML
+    private DatePicker reviewDeadlinePicker;
+
     private EvaluationDAO evaluationDAO;
     private DateTimeFormatter dateFormatter;
     private ObservableList<Evaluation> allEvaluations;
@@ -78,6 +91,7 @@ public class ListEvaluationsController implements Initializable {
 
         setupFilterComboBox();
         setupSearchField();
+        setupReviewDeadlinePane();
         loadEvaluations();
     }
 
@@ -89,7 +103,80 @@ public class ListEvaluationsController implements Initializable {
             "à revoir"
         ));
         filterComboBox.setValue("Tous");
-        filterComboBox.setOnAction(event -> applyFilters());
+        filterComboBox.setOnAction(event -> {
+            applyFilters();
+            updateReviewDeadlineVisibility();
+        });
+    }
+
+    private void setupReviewDeadlinePane() {
+        if (reviewDeadlinePane != null) {
+            reviewDeadlinePane.setVisible(false);
+            reviewDeadlinePane.setManaged(false);
+        }
+
+        if (reviewDeadlinePicker != null) {
+            reviewDeadlinePicker.setDayCellFactory(createReviewDeadlineCellFactory());
+            reviewDeadlinePicker.setOnAction(event -> {
+                LocalDate selectedDate = reviewDeadlinePicker.getValue();
+                if (selectedDate != null) {
+                    long count = allEvaluations.stream()
+                        .filter(e -> e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR)
+                        .filter(e -> selectedDate.equals(e.getReviewDeadline()))
+                        .count();
+
+                    if (count > 0) {
+                        showAlert(
+                            Alert.AlertType.INFORMATION,
+                            "Évaluations à revoir",
+                            "Il y a " + count + " évaluation(s) A_REVOIR avec une deadline le "
+                                + selectedDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        );
+                    } else {
+                        showAlert(
+                            Alert.AlertType.INFORMATION,
+                            "Aucune échéance",
+                            "Aucune évaluation A_REVOIR n'a de deadline le "
+                                + selectedDate.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        );
+                    }
+                }
+            });
+        }
+    }
+
+    private Callback<DatePicker, DateCell> createReviewDeadlineCellFactory() {
+        return datePicker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (!empty && date != null && hasReviewDeadlineOn(date)) {
+                    setStyle("-fx-background-color: #FFE0B2; -fx-border-color: #FB8C00;");
+                    setTooltip(new Tooltip("Au moins une évaluation A_REVOIR à revoir ce jour"));
+                }
+            }
+        };
+    }
+
+    private boolean hasReviewDeadlineOn(LocalDate date) {
+        if (date == null) {
+            return false;
+        }
+
+        return allEvaluations.stream()
+            .anyMatch(e ->
+                e.getDecisionPreliminaire() == Evaluation.DecisionPreliminaire.A_REVOIR
+                    && date.equals(e.getReviewDeadline())
+            );
+    }
+
+    private void updateReviewDeadlineVisibility() {
+        if (reviewDeadlinePane != null && filterComboBox != null) {
+            boolean show = "à revoir".equals(filterComboBox.getValue());
+            reviewDeadlinePane.setVisible(show);
+            reviewDeadlinePane.setManaged(show);
+        }
     }
 
     private boolean matchesDecisionFilter(String filterValue, Evaluation.DecisionPreliminaire decision) {
@@ -113,14 +200,14 @@ public class ListEvaluationsController implements Initializable {
 
         List<Evaluation> filtered = allEvaluations.stream()
             .filter(e -> {
-                // Search filter
+               
                 boolean matchesSearch = searchText.isEmpty() ||
                     String.valueOf(e.getIdEvaluation()).contains(searchText) ||
                     (e.getCommentaireGlobal() != null && e.getCommentaireGlobal().toLowerCase().contains(searchText)) ||
                     String.valueOf(e.getFkEntretienId()).contains(searchText) ||
                     String.valueOf(e.getFkRecruteurId()).contains(searchText);
                 
-                // Decision filter
+                
                 boolean matchesFilter = "Tous".equals(filterValue) || 
                     matchesDecisionFilter(filterValue, e.getDecisionPreliminaire());
                 
@@ -155,6 +242,7 @@ public class ListEvaluationsController implements Initializable {
         filterComboBox.setValue("Tous");
         displayedEvaluations.setAll(allEvaluations);
         sortAscending = true;
+        updateReviewDeadlineVisibility();
         refreshGrid();
         updatePieChart();
     }
@@ -305,6 +393,10 @@ public class ListEvaluationsController implements Initializable {
         displayedEvaluations.setAll(allEvaluations);
         refreshGrid();
         updatePieChart();
+        if (reviewDeadlinePicker != null) {
+            // Force refresh of the calendar cell styles
+            reviewDeadlinePicker.setValue(reviewDeadlinePicker.getValue());
+        }
     }
 
     private void updatePieChart() {
@@ -332,16 +424,30 @@ public class ListEvaluationsController implements Initializable {
 
         decisionPieChart.setData(pieChartData);
         decisionPieChart.setTitle("Répartition des Décisions");
-        
-        // Apply colors to pie chart slices
-        pieChartData.forEach(data -> {
-            String color = switch (data.getName()) {
-                case "Favorable" -> "#4CAF50";
-                case "Défavorable" -> "#F44336";
-                case "A Revoir" -> "#FF9800";
-                default -> "#757575";
-            };
-            data.getNode().setStyle("-fx-pie-color: " + color + ";");
+
+        Platform.runLater(() -> {
+            for (PieChart.Data data : decisionPieChart.getData()) {
+                String color = switch (data.getName()) {
+                    case "Favorable" -> "#4CAF50";
+                    case "Défavorable" -> "#F44336";
+                    case "A Revoir" -> "#FF9800";
+                    default -> "#757575";
+                };
+
+                Node node = data.getNode();
+                if (node != null) {
+                    node.setStyle("-fx-pie-color: " + color + ";");
+                }
+
+                for (Node legendItem : decisionPieChart.lookupAll(".chart-legend-item")) {
+                    if (legendItem instanceof Label legendLabel && legendLabel.getText().equals(data.getName())) {
+                        Node symbol = legendLabel.getGraphic();
+                        if (symbol != null) {
+                            symbol.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 100%; -fx-padding: 5;");
+                        }
+                    }
+                }
+            }
         });
     }
 

@@ -1,8 +1,10 @@
 package database;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import interfaces.Services;
 import model.Evaluation;
 import model.ScoreCompetence;
@@ -22,7 +24,7 @@ public class EvaluationDAO implements Services<Evaluation> {
 
     @Override
     public void add(Evaluation evaluation) {
-        String req = "INSERT INTO `evaluation`(`date_creation`, `commentaire_global`, `decision_preliminaire`, `fk_entretien_id`, `fk_recruteur_id`) VALUES (?,?,?,?,?)";
+        String req = "INSERT INTO `evaluation`(`date_creation`, `commentaire_global`, `decision_preliminaire`, `fk_entretien_id`, `fk_recruteur_id`, `review_deadline`) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = this.cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             pstm.setTimestamp(1, Timestamp.valueOf(evaluation.getDateCreation()));
@@ -30,6 +32,13 @@ public class EvaluationDAO implements Services<Evaluation> {
             pstm.setString(3, evaluation.getDecisionPreliminaire().name());
             pstm.setInt(4, evaluation.getFkEntretienId());
             pstm.setInt(5, evaluation.getFkRecruteurId());
+
+            LocalDate deadline = evaluation.getReviewDeadline();
+            if (deadline != null) {
+                pstm.setDate(6, Date.valueOf(deadline));
+            } else {
+                pstm.setNull(6, Types.DATE);
+            }
             pstm.executeUpdate();
 
             ResultSet rs = pstm.getGeneratedKeys();
@@ -50,7 +59,7 @@ public class EvaluationDAO implements Services<Evaluation> {
 
     @Override
     public void update(Evaluation evaluation) {
-        String req = "UPDATE `evaluation` SET `date_creation`=?, `commentaire_global`=?, `decision_preliminaire`=?, `fk_entretien_id`=?, `fk_recruteur_id`=? WHERE `id_evaluation`=?";
+        String req = "UPDATE `evaluation` SET `date_creation`=?, `commentaire_global`=?, `decision_preliminaire`=?, `fk_entretien_id`=?, `fk_recruteur_id`=?, `review_deadline`=? WHERE `id_evaluation`=?";
         try {
             PreparedStatement pstm = this.cnx.prepareStatement(req);
             pstm.setTimestamp(1, Timestamp.valueOf(evaluation.getDateCreation()));
@@ -58,7 +67,15 @@ public class EvaluationDAO implements Services<Evaluation> {
             pstm.setString(3, evaluation.getDecisionPreliminaire().name());
             pstm.setInt(4, evaluation.getFkEntretienId());
             pstm.setInt(5, evaluation.getFkRecruteurId());
-            pstm.setInt(6, evaluation.getIdEvaluation());
+
+            LocalDate deadline = evaluation.getReviewDeadline();
+            if (deadline != null) {
+                pstm.setDate(6, Date.valueOf(deadline));
+            } else {
+                pstm.setNull(6, Types.DATE);
+            }
+
+            pstm.setInt(7, evaluation.getIdEvaluation());
             pstm.executeUpdate();
             // Note: Score competences are managed separately via ScoreCompetenceDAO
             // (add/delete operations in UpdateEvaluationController)
@@ -94,6 +111,10 @@ public class EvaluationDAO implements Services<Evaluation> {
                 e.setDecisionPreliminaire(Evaluation.DecisionPreliminaire.valueOf(rs.getString("decision_preliminaire")));
                 e.setFkEntretienId(rs.getInt("fk_entretien_id"));
                 e.setFkRecruteurId(rs.getInt("fk_recruteur_id"));
+                 Date deadlineDate = rs.getDate("review_deadline");
+                 if (deadlineDate != null) {
+                     e.setReviewDeadline(deadlineDate.toLocalDate());
+                 }
                 evaluations.add(e);
             }
         } catch (SQLException e) {
@@ -118,6 +139,11 @@ public class EvaluationDAO implements Services<Evaluation> {
                 result.setDecisionPreliminaire(Evaluation.DecisionPreliminaire.valueOf(rs.getString("decision_preliminaire")));
                 result.setFkEntretienId(rs.getInt("fk_entretien_id"));
                 result.setFkRecruteurId(rs.getInt("fk_recruteur_id"));
+
+                Date deadlineDate = rs.getDate("review_deadline");
+                if (deadlineDate != null) {
+                    result.setReviewDeadline(deadlineDate.toLocalDate());
+                }
 
                 List<ScoreCompetence> scores = scoreCompetenceDAO.getByEvaluationId(result.getIdEvaluation());
                 result.setScoreCompetences(scores);

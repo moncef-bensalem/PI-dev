@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
@@ -39,6 +40,14 @@
                         <Label text="Décision Préliminaire *" />
                         <ComboBox fx:id="decisionPreliminaireCombo" prefWidth="300.0" promptText="Sélectionnez la décision" />
                         <Label fx:id="decisionErrorLabel" styleClass="error" text="" />
+                     </children>
+                  </VBox>
+
+                  <VBox fx:id="reviewDeadlineContainer" spacing="5.0" visible="false" managed="false">
+                     <children>
+                        <Label text="Date de revue*" />
+                        <DatePicker fx:id="reviewDeadlinePicker" promptText="Choisissez une date limite" />
+                        <Label fx:id="reviewDeadlineErrorLabel" styleClass="error" text="" />
                      </children>
                   </VBox>
 
