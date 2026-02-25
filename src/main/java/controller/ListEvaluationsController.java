@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.FlowPane;
@@ -30,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import model.Evaluation;
 
 import java.io.IOException;
@@ -60,6 +62,9 @@ public class ListEvaluationsController implements Initializable {
 
     @FXML
     private Button clearFiltersButton;
+
+    @FXML
+    private Button aiAnalyseButton;
 
     @FXML
     private PieChart decisionPieChart;
@@ -347,7 +352,7 @@ public class ListEvaluationsController implements Initializable {
 
         LocalDate firstOfMonth = currentCalendarMonth;
         int lengthOfMonth = firstOfMonth.lengthOfMonth();
-        int firstDayCol = firstOfMonth.getDayOfWeek().getValue() % 7; // Lundi = 1 -> 1, Dimanche = 7 -> 0
+        int firstDayCol = firstOfMonth.getDayOfWeek().getValue() - 1;
 
         int row = 1;
         int col = firstDayCol;
@@ -472,5 +477,24 @@ public class ListEvaluationsController implements Initializable {
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la boîte de dialogue de création d'évaluation : " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleAiVideoAnalyse() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Sélectionner une vidéo d'entretien");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Vidéos", "*.mp4", "*.mov", "*.avi", "*.mkv"),
+            new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+        );
+
+        Stage stage = (Stage) evaluationsGrid.getScene().getWindow();
+        java.io.File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile == null) {
+            return;
+        }
+
+        showAlert(Alert.AlertType.INFORMATION, "Vidéo sélectionnée", "Fichier sélectionné : " + selectedFile.getName());
     }
 }

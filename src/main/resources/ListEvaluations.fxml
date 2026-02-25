@@ -36,6 +36,7 @@
                   <ComboBox fx:id="filterComboBox" prefWidth="150.0" promptText="Filtrer" />
                   <Button fx:id="sortButton" onAction="#handleSortByDecision" text="Trier par Décision" />
                   <Button fx:id="clearFiltersButton" onAction="#handleClearFilters" text="Effacer" />
+                  <Button fx:id="aiAnalyseButton" onAction="#handleAiVideoAnalyse" text="Evaluer par IA" />
                </children>
             </HBox>
              
@@ -58,7 +59,13 @@
                   </ScrollPane>
                   <VBox fx:id="calendarContainer" prefHeight="598.0" prefWidth="456.0" spacing="10.0" styleClass="calendar-container">
                      <children>
-                        <Label fx:id="calendarMonthLabel" styleClass="subtitle" text="Calendrier" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Button fx:id="prevMonthButton" onAction="#handlePrevMonth" text="&#x276E;" styleClass="button" style="-fx-padding: 4px 12px; -fx-font-size: 14px;" />
+                              <Label fx:id="calendarMonthLabel" styleClass="subtitle" text="Calendrier" HBox.hgrow="ALWAYS" style="-fx-alignment: center; -fx-text-alignment: center;" maxWidth="Infinity" />
+                              <Button fx:id="nextMonthButton" onAction="#handleNextMonth" text="&#x276F;" styleClass="button" style="-fx-padding: 4px 12px; -fx-font-size: 14px;" />
+                           </children>
+                        </HBox>
                         <GridPane fx:id="calendarGrid" hgap="4.0" prefHeight="321.0" prefWidth="382.0" vgap="4.0">
                            <padding>
                               <Insets bottom="5.0" left="0.0" right="0.0" top="5.0" />
