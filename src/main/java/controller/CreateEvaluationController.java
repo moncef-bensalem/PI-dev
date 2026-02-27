@@ -21,13 +21,20 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Evaluation;
 import model.ScoreCompetence;
+import model.ai.AnalysisResult;
+import model.ai.ScoreSuggestion;
+import service.AiAnalysisTempStorage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CreateEvaluationController implements Initializable {
+    private static final Logger LOGGER = Logger.getLogger(CreateEvaluationController.class.getName());
 
     @FXML
     private TextField commentaireGlobalField;
@@ -94,6 +101,53 @@ public class CreateEvaluationController implements Initializable {
 
         setupScoreCompetencesListView();
         updateScoreCount();
+
+        prefillFromAiTempAnalysisIfPresent();
+    }
+
+    private void prefillFromAiTempAnalysisIfPresent() {
+        Optional<AnalysisResult> resultOpt;
+        try {
+            resultOpt = new AiAnalysisTempStorage().loadAndClear();
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.WARNING, "Impossible de charger l'analyse IA temporaire (ignoré).", e);
+            return;
+        }
+        if (resultOpt.isEmpty()) {
+            return;
+        }
+
+        AnalysisResult result = resultOpt.get();
+
+        String globalComment = result.getGlobalComment();
+        if (globalComment != null && !globalComment.trim().isEmpty()) {
+            if (commentaireGlobalField.getText() == null || commentaireGlobalField.getText().trim().isEmpty()) {
+                commentaireGlobalField.setText(globalComment.trim());
+            }
+            currentEvaluation.setCommentaireGlobal(globalComment.trim());
+        }
+
+        if (result.getScoreSuggestions() != null) {
+            for (ScoreSuggestion suggestion : result.getScoreSuggestions()) {
+                if (suggestion == null) {
+                    continue;
+                }
+
+                String nomCritere = suggestion.getNomCritere();
+                if (nomCritere == null || nomCritere.trim().isEmpty()) {
+                    continue;
+                }
+
+                ScoreCompetence score = new ScoreCompetence(
+                        nomCritere.trim(),
+                        (float) suggestion.getNoteAttribuee(),
+                        suggestion.getAppreciationSpecifique()
+                );
+                currentEvaluation.addScoreCompetence(score);
+            }
+        }
+
+        refreshScoreList();
     }
 
     private void setupScoreCompetencesListView() {

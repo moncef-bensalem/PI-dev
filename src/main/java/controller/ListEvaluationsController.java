@@ -2,6 +2,7 @@ package controller;
 
 import database.EvaluationDAO;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,6 +34,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import model.Evaluation;
+import model.ai.AnalysisResult;
+import service.AiAnalysisTempStorage;
+import service.AiVideoAnalysisService;
+import service.AiVideoAnalysisService.AiVideoAnalysisException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,9 +46,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ListEvaluationsController implements Initializable {
+    private static final Logger LOGGER = Logger.getLogger(ListEvaluationsController.class.getName());
 
     @FXML
     private FlowPane evaluationsGrid;
@@ -463,6 +471,10 @@ public class ListEvaluationsController implements Initializable {
 
     @FXML
     private void handleAddEvaluation() {
+        openCreateEvaluationDialog();
+    }
+
+    private void openCreateEvaluationDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/CreateEvaluation.fxml"));
             Parent root = loader.load();
@@ -495,6 +507,62 @@ public class ListEvaluationsController implements Initializable {
             return;
         }
 
-        showAlert(Alert.AlertType.INFORMATION, "Vidéo sélectionnée", "Fichier sélectionné : " + selectedFile.getName());
+        LOGGER.info(() -> "[AI] Vidéo sélectionnée: " + selectedFile.getAbsolutePath());
+
+        aiAnalyseButton.setDisable(true);
+
+        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
+        progressAlert.setTitle("Analyse vidéo en cours");
+        progressAlert.setHeaderText(null);
+        progressAlert.setContentText("Analyse de la vidéo en cours, veuillez patienter...");
+        progressAlert.getDialogPane().lookupButton(ButtonType.OK).setDisable(true);
+        progressAlert.initOwner(stage);
+        progressAlert.initModality(Modality.APPLICATION_MODAL);
+        progressAlert.show();
+
+        Task<AnalysisResult> task = new Task<>() {
+            @Override
+            protected AnalysisResult call() throws Exception {
+                AiVideoAnalysisService service = new AiVideoAnalysisService();
+                return service.analyseInterview(selectedFile);
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            AnalysisResult result = task.getValue();
+            try {
+                new AiAnalysisTempStorage().save(result);
+            } finally {
+                aiAnalyseButton.setDisable(false);
+                if (progressAlert.isShowing()) {
+                    progressAlert.close();
+                }
+            }
+
+            openCreateEvaluationDialog();
+        });
+
+        task.setOnFailed(event -> {
+            Throwable ex = task.getException();
+
+            aiAnalyseButton.setDisable(false);
+            if (progressAlert.isShowing()) {
+                progressAlert.close();
+            }
+
+            LOGGER.log(Level.WARNING, "[AI] Échec analyse vidéo.", ex);
+
+            String baseMessage = "L’analyse vidéo a échoué. Veuillez réessayer plus tard ou vérifier le fichier.";
+            String details = (ex instanceof AiVideoAnalysisException) ? ex.getMessage() : null;
+            String fullMessage = (details != null && !details.isBlank())
+                    ? baseMessage + "\n\nDétail : " + details
+                    : baseMessage;
+
+            showAlert(Alert.AlertType.ERROR, "Erreur d'analyse vidéo", fullMessage);
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }
