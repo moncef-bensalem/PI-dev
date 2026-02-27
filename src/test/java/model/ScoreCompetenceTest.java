@@ -15,12 +15,10 @@ class ScoreCompetenceTest {
 
     @BeforeAll
     static void beforeAll() {
-        // One-time setup for this test class if needed
     }
 
     @AfterAll
     static void afterAll() {
-        // One-time cleanup for this test class if needed
     }
 
     @BeforeEach

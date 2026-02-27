@@ -34,7 +34,7 @@
                <children>
                   <TextField fx:id="searchField" promptText="Rechercher des évaluations..." HBox.hgrow="ALWAYS" />
                   <ComboBox fx:id="filterComboBox" prefWidth="150.0" promptText="Filtrer" />
-                  <Button fx:id="sortButton" onAction="#handleSortByDecision" text="Trier par Décision" />
+                  <Button fx:id="sortButton" onAction="#handleSortByScore" text="Trier par Score" />
                   <Button fx:id="clearFiltersButton" onAction="#handleClearFilters" text="Effacer" />
                   <Button fx:id="aiAnalyseButton" onAction="#handleAiVideoAnalyse" text="Evaluer par IA" />
                </children>

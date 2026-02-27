@@ -40,18 +40,14 @@ public class AiVideoAnalysisService {
 
     public AnalysisResult analyseInterview(File videoFile) throws AiVideoAnalysisException {
         try {
-            // 1. Upload vers Google Files API (Resumable)
             String fileUri = uploadVideo(videoFile);
             String fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
 
-            // 2. Attendre que Google traite la vidéo (important pour les vidéos longues)
             waitForVideoProcessing(fileName);
 
-            // 3. Demander l'analyse à Gemini
             return callGemini(fileUri);
 
         } catch (AiVideoAnalysisException e) {
-            // On laisse passer les messages déjà adaptés à l'utilisateur (ex: quota dépassé)
             throw e;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Échec de l'analyse Gemini", e);
@@ -63,7 +59,6 @@ public class AiVideoAnalysisService {
         long fileSize = videoFile.length();
         String mimeType = "video/mp4";
 
-        // Initialisation de l'upload résumable
         HttpRequest initRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://generativelanguage.googleapis.com/upload/v1beta/files?key=" + apiKey))
                 .header("X-Goog-Upload-Protocol", "resumable")
@@ -76,7 +71,6 @@ public class AiVideoAnalysisService {
         HttpResponse<String> initRes = httpClient.send(initRequest, HttpResponse.BodyHandlers.ofString());
         String uploadUrl = initRes.headers().firstValue("x-goog-upload-url").orElseThrow();
 
-        // Envoi du fichier
         HttpRequest uploadRequest = HttpRequest.newBuilder()
                 .uri(URI.create(uploadUrl))
                 .header("X-Goog-Upload-Offset", "0")
@@ -91,7 +85,7 @@ public class AiVideoAnalysisService {
 
     private void waitForVideoProcessing(String fileName) throws Exception {
         int attempts = 0;
-        while (attempts < 20) { // Max 10 minutes d'attente
+        while (attempts < 20) {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://generativelanguage.googleapis.com/v1beta/files/" + fileName + "?key=" + apiKey))
                     .GET().build();
@@ -102,19 +96,16 @@ public class AiVideoAnalysisService {
             if ("ACTIVE".equals(state)) return;
             if ("FAILED".equals(state)) throw new Exception("Le traitement de la vidéo par Google a échoué.");
 
-            Thread.sleep(30000); // Attendre 30 sec entre chaque vérification
+            Thread.sleep(30000);
             attempts++;
         }
     }
 
     private AnalysisResult callGemini(String fileUri) throws Exception {
         try {
-            // Tentative avec le modèle récent gemini-1.5-flash
             return callGeminiWithModel(fileUri, "gemini-1.5-flash");
         } catch (AiVideoAnalysisException e) {
             String msg = e.getMessage();
-            // Si le modèle 1.5 n'est pas disponible pour cette clé / version d'API,
-            // on bascule automatiquement vers un modèle plus ancien mais largement disponible.
             if (msg != null &&
                     msg.contains("is not found for API version v1beta, or is not supported for generateContent")) {
                 LOGGER.log(Level.WARNING,
@@ -127,7 +118,6 @@ public class AiVideoAnalysisService {
     }
 
     private AnalysisResult callGeminiWithModel(String fileUri, String modelName) throws Exception {
-        // On demande spécifiquement un format JSON à Gemini pour qu'il remplisse AnalysisResult
         String prompt = "Analyse le discours de cette vidéo d'entretien. " +
                 "Ignore le visuel, concentre-toi sur la parole. " +
                 "Réponds UNIQUEMENT au format JSON suivant : " +
@@ -167,7 +157,6 @@ public class AiVideoAnalysisService {
         try {
             JsonObject root = JsonParser.parseString(responseBody).getAsJsonObject();
 
-            // Gestion explicite des erreurs retournées par l'API Gemini
             if (root.has("error")) {
                 JsonObject error = root.getAsJsonObject("error");
                 int code = error.has("code") ? error.get("code").getAsInt() : 0;
@@ -188,7 +177,6 @@ public class AiVideoAnalysisService {
                 );
             }
 
-            // Extraction du texte JSON imbriqué dans la réponse Gemini
             JsonArray candidates = root.getAsJsonArray("candidates");
             if (candidates == null || candidates.size() == 0) {
                 throw new AiVideoAnalysisException(
@@ -220,7 +208,6 @@ public class AiVideoAnalysisService {
 
             String rawText = firstPart.get("text").getAsString();
 
-            // Nettoyage si Gemini met des balises ```json
             String cleanJson = rawText.replaceAll("```json", "").replaceAll("```", "").trim();
 
             JsonObject data = JsonParser.parseString(cleanJson).getAsJsonObject();

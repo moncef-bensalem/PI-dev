@@ -106,6 +106,17 @@ public class Evaluation {
         this.scoreCompetences.remove(scoreCompetence);
     }
 
+    public float getMoyenneScore() {
+        if (scoreCompetences == null || scoreCompetences.isEmpty()) {
+            return 0f;
+        }
+        float sum = 0f;
+        for (ScoreCompetence sc : scoreCompetences) {
+            sum += sc.getNoteAttribuee();
+        }
+        return sum / scoreCompetences.size();
+    }
+
     @Override
     public String toString() {
         return "Evaluation{" +

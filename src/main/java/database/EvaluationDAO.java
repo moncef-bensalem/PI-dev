@@ -77,8 +77,6 @@ public class EvaluationDAO implements Services<Evaluation> {
 
             pstm.setInt(7, evaluation.getIdEvaluation());
             pstm.executeUpdate();
-            // Note: Score competences are managed separately via ScoreCompetenceDAO
-            // (add/delete operations in UpdateEvaluationController)
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -111,10 +109,14 @@ public class EvaluationDAO implements Services<Evaluation> {
                 e.setDecisionPreliminaire(Evaluation.DecisionPreliminaire.valueOf(rs.getString("decision_preliminaire")));
                 e.setFkEntretienId(rs.getInt("fk_entretien_id"));
                 e.setFkRecruteurId(rs.getInt("fk_recruteur_id"));
-                 Date deadlineDate = rs.getDate("review_deadline");
-                 if (deadlineDate != null) {
-                     e.setReviewDeadline(deadlineDate.toLocalDate());
-                 }
+                Date deadlineDate = rs.getDate("review_deadline");
+                if (deadlineDate != null) {
+                    e.setReviewDeadline(deadlineDate.toLocalDate());
+                }
+
+                List<ScoreCompetence> scores = scoreCompetenceDAO.getByEvaluationId(e.getIdEvaluation());
+                e.setScoreCompetences(scores);
+
                 evaluations.add(e);
             }
         } catch (SQLException e) {

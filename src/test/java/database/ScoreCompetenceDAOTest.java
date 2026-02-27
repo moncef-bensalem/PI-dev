@@ -35,7 +35,6 @@ class ScoreCompetenceDAOTest {
 
     @BeforeEach
     void setUp() throws SQLException {
-        // Use transactions to keep tests isolated
         if (connection != null) {
             connection.setAutoCommit(false);
         }
@@ -75,7 +74,6 @@ class ScoreCompetenceDAOTest {
         ScoreCompetence score = new ScoreCompetence(uniqueName, 10.0f, "Avant update");
         scoreCompetenceDAO.add(score);
 
-        // Retrieve the inserted row to get its generated id
         ScoreCompetence persisted = scoreCompetenceDAO.getAll().stream()
                 .filter(sc -> uniqueName.equals(sc.getNomCritere()))
                 .findFirst()

@@ -165,8 +165,8 @@ public class ListEvaluationsController implements Initializable {
     }
 
     @FXML
-    private void handleSortByDecision() {
-        Comparator<Evaluation> comparator = Comparator.comparing(Evaluation::getDecisionPreliminaire);
+    private void handleSortByScore() {
+        Comparator<Evaluation> comparator = Comparator.comparingDouble(Evaluation::getMoyenneScore);
         if (!sortAscending) {
             comparator = comparator.reversed();
         }

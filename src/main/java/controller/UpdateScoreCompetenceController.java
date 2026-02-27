@@ -105,16 +105,10 @@ public class UpdateScoreCompetenceController implements Initializable {
         return isValid;
     }
 
-    /**
-     * Returns true if the score competence was saved successfully
-     */
     public boolean isSaved() {
         return saved;
     }
 
-    /**
-     * Returns the updated ScoreCompetence
-     */
     public ScoreCompetence getScoreCompetence() {
         return scoreCompetence;
     }

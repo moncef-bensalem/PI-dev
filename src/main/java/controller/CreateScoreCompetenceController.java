@@ -94,9 +94,6 @@ public class CreateScoreCompetenceController implements Initializable {
         return isValid;
     }
 
-    /**
-     * Returns the created ScoreCompetence if saved, null otherwise
-     */
     public ScoreCompetence getScoreCompetence() {
         return saved ? scoreCompetence : null;
     }
