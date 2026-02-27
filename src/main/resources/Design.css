@@ -1,17 +1,12 @@
-/* ============================================
-   NEXUS Design.css — Dark Neon Theme
-   Aligned with admin_dashboard / candidate / login design language
-   ============================================ */
-
 .root {
     -fx-background-color: #060B1A;
     -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     -fx-font-size: 13px;
-    -fx-text-fill: #E8F2FF;
+    -fx-text-fill: #F9F4E5;
 }
 
 .label {
-    -fx-text-fill: #E8F2FF;
+    -fx-text-fill: #F9F4E5;
 }
 
 .scroll-pane {
@@ -24,7 +19,6 @@
     -fx-background-color: transparent;
 }
 
-/* ─── SCROLLBAR ─────────────────────────────── */
 .scroll-bar .thumb {
     -fx-background-color: rgba(0, 198, 255, 0.35);
     -fx-background-radius: 10;
@@ -44,18 +38,17 @@
     -fx-opacity: 0;
 }
 
-/* ─── TYPOGRAPHY ────────────────────────────── */
 .title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #F9F4E5;
     -fx-effect: dropshadow(gaussian, rgba(0, 198, 255, 0.40), 14, 0.2, 0, 2);
 }
 
 .subtitle {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #D0E8FF;
+    -fx-text-fill: #F9F4E5;
 }
 
 .section {
@@ -75,13 +68,11 @@
     -fx-text-fill: #FF6B6B;
 }
 
-/* ─── SEPARATOR ─────────────────────────────── */
 .separator .line {
     -fx-border-color: rgba(0, 198, 255, 0.18);
     -fx-border-width: 1px;
 }
 
-/* ─── TEXT FIELD ────────────────────────────── */
 .text-field {
     -fx-background-color: rgba(10, 25, 50, 0.80);
     -fx-border-color: rgba(0, 198, 255, 0.30);
@@ -100,7 +91,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 198, 255, 0.25), 8, 0, 0, 1);
 }
 
-/* ─── COMBO BOX ─────────────────────────────── */
 .combo-box {
     -fx-background-color: rgba(10, 25, 50, 0.80);
     -fx-border-color: rgba(0, 198, 255, 0.30);
@@ -152,7 +142,6 @@
     -fx-text-fill: #FFFFFF;
 }
 
-/* ─── LIST VIEW ─────────────────────────────── */
 .list-view {
     -fx-background-color: rgba(6, 11, 26, 0.95);
     -fx-border-color: rgba(0, 198, 255, 0.18);
@@ -206,7 +195,6 @@
     -fx-background-color: rgba(0, 198, 255, 0.06);
 }
 
-/* ─── BUTTON ────────────────────────────────── */
 .button {
     -fx-background-color: linear-gradient(to right, #00C6FF, #0072FF);
     -fx-text-fill: #FFFFFF;
@@ -312,7 +300,6 @@
     -fx-text-fill: #FFFFFF;
 }
 
-/* ─── TOOLBAR ───────────────────────────────── */
 .toolbar {
     -fx-background-color: linear-gradient(145deg, rgba(14, 30, 64, 0.92) 0%, rgba(8, 18, 38, 0.96) 100%);
     -fx-padding: 12px 15px;
@@ -323,7 +310,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 100, 200, 0.22), 12, 0, 0, 3);
 }
 
-/* ─── TEMPORARY SECTION ─────────────────────── */
 .temporary-section {
     -fx-background-color: rgba(255, 160, 0, 0.10);
     -fx-border-color: rgba(255, 190, 50, 0.45);
@@ -337,12 +323,10 @@
     -fx-text-fill: #FFD060;
 }
 
-/* ─── FLOWPANE ──────────────────────────────── */
 .flowpane-cards {
     -fx-background-color: transparent;
 }
 
-/* ─── CALENDAR ──────────────────────────────── */
 .calendar-container {
     -fx-background-color: rgba(10, 22, 50, 0.95);
     -fx-border-color: rgba(0, 198, 255, 0.22);
@@ -381,7 +365,6 @@
     -fx-wrap-text: true;
 }
 
-/* ─── CARD ──────────────────────────────────── */
 .card {
     -fx-background-color: linear-gradient(145deg, rgba(14, 30, 64, 0.92) 0%, rgba(8, 18, 38, 0.96) 100%);
     -fx-border-color: rgba(0, 198, 255, 0.22);
@@ -393,6 +376,14 @@
 }
 
 .card .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.card .title,
+.card .subtitle,
+.card .section,
+.card .count,
+.card .text {
     -fx-text-fill: #FFFFFF;
 }
 
@@ -464,7 +455,6 @@
     -fx-border-color: rgba(255, 190, 50, 0.70);
 }
 
-/* ─── TITLED PANE ───────────────────────────── */
 .titled-pane {
     -fx-border-color: rgba(0, 198, 255, 0.20);
     -fx-border-width: 1px;
@@ -494,7 +484,6 @@
     -fx-padding: 10px;
 }
 
-/* ─── ANALYTICS & CALENDAR PANES (flat) ─────── */
 .analytics-pane,
 .calendar-pane {
     -fx-effect: null;
@@ -509,7 +498,6 @@
     -fx-background-color: rgba(8, 18, 42, 0.97);
 }
 
-/* ─── DETAIL PANE ───────────────────────────── */
 .detail-pane {
     -fx-background-color: rgba(10, 22, 50, 0.90);
     -fx-border-color: rgba(0, 198, 255, 0.20);
@@ -519,7 +507,6 @@
     -fx-padding: 15px;
 }
 
-/* ─── STAT CARDS ────────────────────────────── */
 .stat-card {
     -fx-background-color: linear-gradient(145deg, rgba(14, 30, 64, 0.92) 0%, rgba(8, 18, 38, 0.96) 100%);
     -fx-border-radius: 12px;
@@ -537,9 +524,8 @@
 .stat-value-purple { -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #A78BFF; -fx-effect: dropshadow(gaussian, rgba(123, 47, 255, 0.60), 10, 0.2, 0, 1); }
 .stat-caption { -fx-font-size: 12px; -fx-text-fill: #D0E8FF; -fx-font-weight: bold; }
 
-/* ─── PIE CHART ─────────────────────────────── */
 .pie-chart {
-    -fx-background-color: transparent;
+    -fx-background-color: #0A1632;
     -fx-pie-label-visible: false;
     -fx-effect: null;
 }
@@ -562,7 +548,7 @@
 }
 
 .pie-chart .chart-legend {
-    -fx-background-color: transparent;
+    -fx-background-color: rgba(10,22,50,0.95);
     -fx-border-color: null;
     -fx-padding: 5;
 }
@@ -593,7 +579,6 @@
 .default-color3.chart-pie { -fx-pie-color: #FF6B6B; }
 .default-color4.chart-pie { -fx-pie-color: #FFB300; }
 
-/* ─── CONTEXTUAL TEXT OVERRIDES ─────────────── */
 .list-view .list-cell {
     -fx-text-fill: #E8F2FF;
 }
@@ -616,4 +601,10 @@
 
 .scroll-pane .label {
     -fx-text-fill: #E8F2FF;
+}
+
+.card-favorable .label,
+.card-defavorable .label,
+.card-arevoir .label {
+    -fx-text-fill: #FFFFFF !important;
 }
