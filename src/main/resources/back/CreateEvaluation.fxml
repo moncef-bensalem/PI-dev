@@ -12,20 +12,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="750.0" prefWidth="700.0"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllerModule5.UpdateEvaluationController"
-            stylesheets="@DesignM5.css">
+<AnchorPane prefHeight="700.0" prefWidth="700.0" stylesheets="@../DesignM5.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerModule5.CreateEvaluationController">
    <children>
-      <ScrollPane fitToWidth="true" prefHeight="750.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToWidth="true" prefHeight="700.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
             <VBox spacing="15.0">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
                <children>
-                  <Label styleClass="title" text="Modifier l'Évaluation" />
+                  <Label styleClass="title" text="Ajouter une Évaluation" />
 
                   <VBox spacing="5.0">
                      <children>
@@ -51,6 +47,26 @@
                      </children>
                   </VBox>
 
+                  <VBox spacing="10.0" styleClass="temporary-section">
+                     <children>
+                        <Label text="Temporaire :" />
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label text="ID Entretien *" />
+                              <TextField fx:id="fkEntretienIdField" promptText="Entrez l'ID de l'entretien" />
+                              <Label fx:id="entretienErrorLabel" styleClass="error" text="" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                           <children>
+                              <Label text="ID Recruteur *" />
+                              <TextField fx:id="fkRecruteurIdField" promptText="Entrez l'ID du recruteur" />
+                              <Label fx:id="recruteurErrorLabel" styleClass="error" text="" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+
                   <VBox spacing="10.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -60,7 +76,7 @@
                               <Button fx:id="addScoreButton" onAction="#handleAddScoreCompetence" text="+ Ajouter un Score" />
                            </children>
                         </HBox>
-                        <Label fx:id="scoreCountLabel" styleClass="count" text="0 score(s) de compétence" />
+                        <Label fx:id="scoreCountLabel" styleClass="count" text="0 score(s) de compétence ajouté(s)" />
                         <ListView fx:id="scoreCompetencesListView" prefHeight="150.0" />
                      </children>
                   </VBox>
@@ -68,7 +84,7 @@
                   <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>
                         <Button fx:id="cancelButton" onAction="#handleCancel" text="Annuler" />
-                        <Button fx:id="saveButton" onAction="#handleSave" text="Enregistrer les Modifications" />
+                        <Button fx:id="saveButton" onAction="#handleSave" text="Enregistrer l'Évaluation" />
                      </children>
                   </HBox>
                </children>
